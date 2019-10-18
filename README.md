@@ -1,3 +1,1 @@
-# Neur1n's Blog
-
-Just stuffs.
+# [Neur1n's Blog](https://neur1n.github.io)
