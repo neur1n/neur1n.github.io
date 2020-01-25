@@ -1,27 +1,61 @@
-.textsc {
-  font-variant: small-caps;
+@import url("header.css");
+
+@font-face {
+  font-family: "Monsterrat";
+  src: "/fonts/Monsterrat/Monsterrat-Regular.ttf";
 }
 
-.top_img {
-  display: block;
-  height: 100%;
-  width: 100%;
-  margin-top: -350px;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
+@font-face {
+  font-family: "Open Sans";
+  src: "/fonts/OpenSans/OpenSans-Regular.ttf";
+}
+
+.textsc {
+  font-family: "Monsterrat";
+  font-size: 30px;
+  font-variant: small-caps;
+  color: #f9f5d7;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.nav-bar-link {
+  text-decoration: none;
+  color: #f9f5d7;
+}
+
+.p-link {
+  text-decoration: none;
+  color: #282828;
+}
+
+.pdf {
+  height: 800px;
+  width: 90%;
+  float: middle;
 }
 
 a {
   text-decoration: none;
 }
 
-a:link, a:visited {
-  color: #f9f5d7;
-}
+/* a:link, a:visited { */
+/*   color: #f9f5d7; */
+/* } */
 
 body {
   background-color: #f9f5d7;
+  margin: 0px;
+}
+
+h1, h2 {
+  font-family: "Monsterrat";
+}
+
+p, ul {
+  font-family: "Open Sans";
 }
 
 /* h1 { */

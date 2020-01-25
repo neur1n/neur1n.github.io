@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Monsterrat";
+  src: "/fonts/Monsterrat/Monsterrat-Regular.ttf";
+}
+
+.header-img-empty {
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: -70.3%;
+  margin-left: -14.5%;
+  margin-right: auto;
+  clip-path: polygon(14.5% 0%, 100% 0%, 100% 30%, 14.5% 30%)
+}
+
+.header-text {
+  font-family: "Monsterrat";
+  font-size: 30px;
+  font-variant: small-caps;
+  color: #f9f5d7;
+}
+
+.header-link {
+  text-decoration: none;
+  color: #f9f5d7;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* a:link, a:visited { */
+/*   color: #f9f5d7; */
+/* } */
