@@ -17,8 +17,9 @@
     });
   </script>
 
-  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
-  <!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
+  <script>window.MathJax = {tex: {tags: "ams"}};</script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <title>Jihang Li - Notes - Miscellaneous</title>
 </head>
@@ -27,13 +28,59 @@
   <div id="header"></div>
 
   <div style="margin: 20px">
-    <h1 class="text-center">Distribution</h1>
+    <h1 class="text-center">Statistics</h1>
+    <script>lastUpdateDate()</script>
     <hr>
-    <p style="text-align:center">
-      <iframe src="categories/notes/miscellaneous/statistics.pdf" height="800" width="90%">
-        Your browser does not support iFrames.
-      </iframe>
+
+    <h2>Contents</h2>
+    <ul>
+      <script>addTOCItem("Distributions", "#distributions")</script>
+      <ul>
+        <script>addTOCItem("1 Normal Distribution", "#normal-distribution")</script>
+        <script>addTOCItem("2 Poisson Distribution", "#poisson-distribution")</script>
+      </ul>
+    </ul>
+
+    <h1 class="text-center" id="distributions">Distributions</h1>
+
+    <!-- ============================================ 1 Normal Distribution -->
+    <h2 id="normal-distribution">1 Normal Distribution</h2>
+    <h3>1.1 Basic Form</h3>
+    <ul>
+      <li>\(X\): random variable.</li>
+      <li>\(\mu\): mean or expectation.</li>
+      <li>\(\sigma\): standard deviation.</li>
+      <li>\(\sigma^2\): variance.</li>
+      <li>\(X \sim \mathcal{N}(\mu, \sigma^2)\): \(X\) is distributed normally
+        with \(\mu\) and \(\sigma^2\),
+        $$\begin{align} f(x \vert \mu, \sigma^2) = \frac{1}{2\sqrt \pi \sigma^2} \exp(-\frac{{(x - \mu)}^2}{2\sigma^2}). \end{align}$$
+      </li>
+    </ul>
+
+    <h3>1.2 Multivariable Form</h3>
+    <ul>
+      <li>\(\mathbf{X}\): random vector, \(\mathbf{X} = (X_1, \ldots, X_k)\).</li>
+      <li>\(\boldsymbol\mu\): mean or expectation vector, \(\boldsymbol\mu = \text{E}[\mathbf{X}] = (\text{E}[\mathbf{X_1}], \text{E}[\mathbf{X_2}], \ldots, \text{E}[\mathbf{X_k}])\).</li>
+      <li>\(\boldsymbol\Sigma\): \(k \times k\) convariance matrix,
+        \(\Sigma_{i,j} = \text{E}[(X_i - \mu_i)(X_j - \mu_j)] = \text{Cov}[X_i, X_j]\), where \(1 \leq i, j \leq k\).
+      </li>
+      <li>\(Q\): precision matrix \(\mathbf{\Sigma}^{-1}\).</li>
+      <li>\(X \sim \mathcal{N}_k(\boldsymbol\mu, \boldsymbol\Sigma)\): \(X\) is
+        distributed normally with \(\boldsymbol\mu\) and \(\boldsymbol\Sigma\)
+        and \(k\) indicates \(k\)-dimension.
+      </li>
+    </ul>
+    <p>
+      For <strong>non-degenerate case</strong>:
+
+      $$\begin{align} f_{\mathbf{X}}(x_1, \ldots, x_k) = \frac{1}{\sqrt{{(2\pi)}^k |\boldsymbol\Sigma|}} \exp(- \frac{{(\mathbf{X} - \boldsymbol\mu)}^{\text{T}} \boldsymbol\Sigma^{-1} (\mathbf{X} - \boldsymbol\mu)}{2}) \end{align}$$
+
+      The descriptive statistic \(\sqrt{{(\mathbf{X} - \boldsymbol\mu)}^{\text{T}} \boldsymbol\Sigma^{-1} (\mathbf{X} - \boldsymbol\mu)}\)
+      is known as the <a href="https://en.wikipedia.org/wiki/Mahalanobis_distance" target="_blank">Mahalanobis distance</a>.
     </p>
+
+    <!-- =========================================== 2 Poisson Distribution -->
+    <h2 id="poisson-distribution">2 Poisson Distribution</h2>
   </div>
 </body>
 </html>
