@@ -1,5 +1,5 @@
 var baseUrl = "https://neur1n.github.io/";
-// var baseUrl = "file:///F:/workspaces/git_ws/Neur1n.github.io/";
+// var baseUrl = "http://localhost:8080/";
 
 function setBase() {
   var base = document.createElement("base");
