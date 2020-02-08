@@ -4,16 +4,15 @@
 <head>
   <meta charset="utf-8">
 
-  <script src="../../../../../js/util.js"></script>
-  <script>setBase()</script>
+  <script src="/js/util.js"></script>
 
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/style.css">
 
-  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="/js/jquery-3.4.1.min.js"></script>
   <script>
     $(function() {
-      $("#header").load("header.html")
+      $("#header").load("/header.html")
     });
   </script>
 
@@ -30,8 +29,8 @@
 
     <h2>Contents</h2>
     <ul>
-      <script>addTOCItem("Abstract", "#abstract")</script>
-      <script>addTOCItem("1 Introduction", "#introduction")</script>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#introduction">1 Introduction</a></li>
       <!-- <ul> -->
       <!--   <script>addTOCItem("1 Normal Distribution", "#normal-distribution")</script> -->
       <!--   <script>addTOCItem("2 Poisson Distribution", "#poisson-distribution")</script> -->
@@ -67,7 +66,7 @@
     </p>
 
     <figure>
-      <img src="figures/fig_1.png" alt="KERN vs. SMN">
+      <center><img src="./figures/fig_1.png" alt="KERN vs. SMN"></center>
       <figcaption>
         Figure 1. (a) Recall@50 and (b) Recall@100 of our proposed method and
         the <a href="https://rowanzellers.com/neuralmotifs/" target="_blank">SMN</a>

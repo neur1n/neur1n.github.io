@@ -1,19 +1,17 @@
 <!DOCTYPE HTML>
 
-<html lang="en">
-<head>
+<html lang="en"> <head>
   <meta charset="utf-8">
 
-  <script src="../../../js/util.js"></script>
-  <script>setBase()</script>
+  <script src="/js/util.js"></script>
 
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/style.css">
 
-  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="/js/jquery-3.4.1.min.js"></script>
   <script>
     $(function() {
-      $("#header").load("header.html")
+      $("#header").load("/header.html")
     });
   </script>
 
@@ -34,10 +32,10 @@
 
     <h2>Contents</h2>
     <ul>
-      <script>addTOCItem("Distributions", "#distributions")</script>
+      <li><a href="#distribution">Distribution</a></li>
       <ul>
-        <script>addTOCItem("1 Normal Distribution", "#normal-distribution")</script>
-        <script>addTOCItem("2 Poisson Distribution", "#poisson-distribution")</script>
+        <li><a href="#normal-distribution">1 Normal Distribution</a></li>
+        <li><a href="#poisson-distribution">2 Poisson Distribution</a></li>
       </ul>
     </ul>
 
