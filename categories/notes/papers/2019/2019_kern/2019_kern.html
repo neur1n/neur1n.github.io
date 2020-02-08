@@ -22,5 +22,68 @@
 
 <body>
   <div id="header"></div>
+
+  <div style="margin: 20px">
+    <h1 class="text-center">Knowledge-Embedded Routing Network for Scene Graph Generation</h1>
+    <script>lastUpdateDate()</script>
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+      <script>addTOCItem("Abstract", "#abstract")</script>
+      <script>addTOCItem("1 Introduction", "#introduction")</script>
+      <!-- <ul> -->
+      <!--   <script>addTOCItem("1 Normal Distribution", "#normal-distribution")</script> -->
+      <!--   <script>addTOCItem("2 Poisson Distribution", "#poisson-distribution")</script> -->
+      <!-- </ul> -->
+    </ul>
+
+    <!-- ========================================================= Abstract -->
+    <h2 id="abstract">Abstract</h2>
+    <p>
+      The distribution of real-world relationships is unbalanced, existing
+      methods perform quite poorly for the less frequent relationships. In this
+      work, it is found that the statistical correlations between object pairs
+      and their relationships can effectively regularize semantic space and
+      make prediction less ambiguous, and thus address the unbalanced
+      distribution issue.
+    </p>
+
+    <!-- =================================================== 1 Introduction -->
+    <h2 id="introduction">1 Introduction</h2>
+    <p>
+      <a href="https://cs.stanford.edu/people/jcjohns/papers/cvpr2015/JohnsonCVPR2015.pdf" target="_blank">Scene graph</a>
+      provides a deeper understanding for the image and facilities various
+      tasks ranging from fundamental recognition and detection to high-level
+      tasks.
+    </p>
+
+    <p>
+      Existing methods for scene graph generation rely on target object regions
+      or contextual cues to aid recognition, which require large amounts of
+      annotated samples for model optimization while the distribution of
+      real-world relationships is unbalanced and lead to poor performance for
+      those with limited training samples.
+    </p>
+
+    <figure>
+      <img src="figures/fig_1.png" alt="KERN vs. SMN">
+      <figcaption>
+        Figure 1. (a) Recall@50 and (b) Recall@100 of our proposed method and
+        the <a href="https://rowanzellers.com/neuralmotifs/" target="_blank">SMN</a>
+        on the scene graph classification task on the Visual Genome dataset.
+        Both models are trained on the whole training set and evaluated on
+        the two subsets, respectively. Note that SMN is the previous
+        best-performing method.
+      </figcaption>
+    </figure>
+
+    <p>
+      Objects in visual scene commonly have strongly structured regularities
+      (according to SMN). Modeling these statistical correlations between
+      object pairs and relationships can effectively regularize the semantic
+      prediction space, and thus address the unbalanced distribution issue.
+    </p>
+  </div>
 </body>
 </html>
