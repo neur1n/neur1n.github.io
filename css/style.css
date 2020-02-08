@@ -14,7 +14,7 @@
   font-family: "Monsterrat";
   font-size: 30px;
   font-variant: small-caps;
-  color: #f9f5d7;
+  color: #fdf6e3;
 }
 
 .text-center {
@@ -23,7 +23,7 @@
 
 .nav-bar-link {
   text-decoration: none;
-  color: #f9f5d7;
+  color: #fdf6e3;
 }
 
 .p-link {
@@ -42,11 +42,11 @@ a {
 }
 
 /* a:link, a:visited { */
-/*   color: #f9f5d7; */
+/*   color: #fdf6e3; */
 /* } */
 
 body {
-  background-color: #f9f5d7;
+  background-color: #fdf6e3;
   margin: 0px;
 }
 
