@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=EB+Garamond|Montserrat:500&display=swap');
 @import url("header.css");
 
-.text-center {
-  text-align: center;
+.body-margin {
+  margin: 2rem;
 }
 
 .nav-bar-link {
@@ -16,7 +16,7 @@
 }
 
 .pdf {
-  height: 800px;
+  height: 50em;
   width: 90%;
   float: middle;
 }
@@ -27,11 +27,15 @@ a {
 
 body {
   background-color: #fdf6e3;
-  margin: 0px;
+  margin: 0rem;  /*Set to 0 to make header 100% width.*/
 }
 
 h1, h2, h3, ul {
   font-family: 'EB Garamond', serif;
+}
+
+ul {
+  font-size: 1.2rem;
 }
 
 figure, p {

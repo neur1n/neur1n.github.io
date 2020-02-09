@@ -12,9 +12,9 @@ function addTOCItem(text, tag) {
 }
 
 function lastUpdateDate() {
-  document.write("<p class=\"text-center\">Last update: " + document.lastModified + "</p>");
+  document.write("<p style=\"text-align: center\">Last update: " + document.lastModified + "</p>");
 }
 
 function sourceLink(url) {
-  document.write("<p class=\"text-center\">[<a href=" + url + " target=\"_blank\">source</a>]</p>");
+  document.write("<p style=\"text-align: center\">[<a href=" + url + " target=\"_blank\">source</a>]</p>");
 }
