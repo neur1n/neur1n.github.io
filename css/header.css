@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "Monsterrat";
-  src: "/fonts/Monsterrat/Monsterrat-Regular.ttf";
-}
-
 .header-img-empty {
   display: block;
   height: 100%;
@@ -15,7 +10,7 @@
 }
 
 .header-text {
-  font-family: "Monsterrat";
+  font-family: 'EB Garamond', serif;
   font-size: 30px;
   font-variant: small-caps;
   color: #f9f5d7;
@@ -29,7 +24,3 @@
 a {
   text-decoration: none;
 }
-
-/* a:link, a:visited { */
-/*   color: #f9f5d7; */
-/* } */

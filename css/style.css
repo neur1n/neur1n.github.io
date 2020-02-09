@@ -1,21 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Montserrat:500&display=swap');
 @import url("header.css");
-
-@font-face {
-  font-family: "Monsterrat";
-  src: "/fonts/Monsterrat/Monsterrat-Regular.ttf";
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: "/fonts/OpenSans/OpenSans-Regular.ttf";
-}
-
-.textsc {
-  font-family: "Monsterrat";
-  font-size: 30px;
-  font-variant: small-caps;
-  color: #fdf6e3;
-}
 
 .text-center {
   text-align: center;
@@ -41,23 +25,20 @@ a {
   text-decoration: none;
 }
 
-/* a:link, a:visited { */
-/*   color: #fdf6e3; */
-/* } */
-
 body {
   background-color: #fdf6e3;
   margin: 0px;
 }
 
-h1, h2 {
-  font-family: "Monsterrat";
+h1, h2, ul {
+  font-family: 'EB Garamond', serif;
 }
 
-p, ul {
-  font-family: "Open Sans";
+ul {
+  font-size: 18px;
 }
 
-/* h1 { */
-/*   text-align: center; */
-/* } */
+figure, p {
+  font-family: 'Monsterrat', sans-serif;
+  font-size: 16px;
+}
