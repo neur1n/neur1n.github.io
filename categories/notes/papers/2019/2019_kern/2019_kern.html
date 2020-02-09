@@ -16,6 +16,10 @@
     });
   </script>
 
+  <script>window.MathJax = {tex: {tags: "ams"}};</script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <title>Jihang Li - Notes - Papers</title>
 </head>
 
@@ -23,14 +27,16 @@
   <div id="header"></div>
 
   <div style="margin: 20px">
-    <h1 class="text-center">Knowledge-Embedded Routing Network for Scene Graph Generation</h1>
+    <h1 style="text-align: center">Knowledge-Embedded Routing Network for Scene Graph Generation</h1>
     <script>lastUpdateDate()</script>
+    <script>sourceLink("https://github.com/yuweihao/KERN")</script>
     <hr>
 
     <h2>Contents</h2>
     <ul>
       <li><a href="#abstract">Abstract</a></li>
       <li><a href="#introduction">1 Introduction</a></li>
+      <li><a href="#experiments">4 Experiments</a></li>
       <!-- <ul> -->
       <!--   <script>addTOCItem("1 Normal Distribution", "#normal-distribution")</script> -->
       <!--   <script>addTOCItem("2 Poisson Distribution", "#poisson-distribution")</script> -->
@@ -66,7 +72,7 @@
     </p>
 
     <figure>
-      <center><img src="./figures/fig_1.png" alt="KERN vs. SMN"></center>
+      <center><img src="./figures/fig_1.png" alt="KERN vs. SMN" style="height: 50%; width: 50%"></center>
       <figcaption>
         Figure 1. (a) Recall@50 and (b) Recall@100 of our proposed method and
         the <a href="https://rowanzellers.com/neuralmotifs/" target="_blank">SMN</a>
@@ -82,6 +88,58 @@
       (according to SMN). Modeling these statistical correlations between
       object pairs and relationships can effectively regularize the semantic
       prediction space, and thus address the unbalanced distribution issue.
+    </p>
+
+    <p>
+      This work introduces a novel Knowledge-Embedded Routing Network (KERN)
+      capturing the interplay of target objects and their relationships under
+      the explicit guidance of prior statistical knowledge and automatically
+      mines contextual cues to facilitate scene graph generation.
+    </p>
+
+    <p>
+      Existing works utilize the recall@<i>X</i> (short as R@<i>X</i>,
+      referring <a href="https://cs.stanford.edu/people/ranjaykrishna/vrd/" target="_blank">Lu, 2016</a>)
+      as the evaluation metric, which  is easily dominated by the performance
+      of the relationships with a large proportion of samples. As the
+      distribution of different relationships is severely unbalanced, if one
+      method performs well on several most frequent relationships, it can
+      achieve a high R@<i>X</i> score, leading to not well measure the
+      performance of all relationships. To address this issue, a mean
+      recall@<i>X</i> (mR@<i>X</i>) is proposed as a complimentary evaluation
+      metric. Compared with R@<i>X</i>, mR@<i>X</i> can give a more
+      comprehensive performance evaluation for all relationships.
+    </p>
+
+    <!-- ============================================== 4 Evaluation Metric -->
+    <h2 id="experiments">4 Experiments</h2>
+    <h3>Evaluation Metrics</h3>
+    <p>
+      In validation/test dataset, assume there are \(Y\) images. For each
+      image, a model generates top \(X\) predicted relationship triplets. As
+      for image \(I_y\), there are \(G_y\) ground truth relationship triplets,
+      where \(T^X_y\) triplets are predicted successfully by the model. Then:
+
+      $$ R@X = \frac{1}{Y} \sum^Y_{y=1} \frac{T^X_y}{G_y} $$
+    </p>
+
+    <p>
+      For image \(I_y\), in its \(G_y\) ground truth relationship triplets,
+      there are \(G_{yk}\) ground truth triplets with relationship \(k\)
+      (Except \(k = 1\), meaning no relationship. The number of relationship
+      classes is \(K\), including no relationship), where \(T^X_{yk}\) triplets
+      are predicted successfully by the model. In \(Y\) images of
+      validation/test dataset, for relationship \(k\), there are \(Y_k\) images
+      which contain at least one ground truth triplet with this relationship.
+      The R@<i>X</i> of relationship \(k\) can be calculated:
+
+      $$ R@X_k = \frac{1}{Y_k} \sum^Y_{y=1,G_{yk} \neq 0} \frac{T^X_{yk}}{G_{yk}} $$
+    </p>
+
+    <p>
+      Then mR@<i>X</i> can be calculated:
+
+      $$ mR@X = \frac{1}{K - 1} \sum^K_{k=2} R@X_k $$
     </p>
   </div>
 </body>
