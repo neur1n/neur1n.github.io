@@ -21,6 +21,29 @@
   float: middle;
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 0.1rem dotted #000000;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: #b2aea2;
+  color: #fdf6e3;
+  text-align: center;
+  font-size: 1rem;
+  padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+  border-radius: 0.2rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 a {
   text-decoration: none;
 }
