@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const cssPattern = /\.css$/;
+const gifPattern = /\.gif$/;
 const htmlPattern = /\.html$/;
 const jsPattern = /\.js$/;
 const pdfPattern = /\.pdf$/;
@@ -18,23 +19,26 @@ var server = http.createServer(function (req, res) {
       res.writeHead(404);
       res.write(file + " is not found!");
     } else {
-      if (cssPattern.test(file)) {
-        res.writeHead(200, {"content-type": "text/css"});
-        res.write(data);
-      } else if (htmlPattern.test(file)) {
-        res.writeHead(200, {"content-type": "text/html"});
-        res.write(data);
-      } else if (jsPattern.test(file)) {
+      if (jsPattern.test(file)) {
         res.writeHead(200, {"content-type": "application/javascript"});
         res.write(data);
       } else if (pdfPattern.test(file)) {
         res.writeHead(200, {"content-type": "application/pdf"});
+        res.write(data);
+      } else if (gifPattern.test(file)) {
+        res.writeHead(200, {"content-type": "image/gif"});
         res.write(data);
       } else if (pngPattern.test(file)) {
         res.writeHead(200, {"content-type": "image/png"});
         res.write(data);
       } else if (svgPattern.test(file)) {
         res.writeHead(200, {"content-type": "image/svg+xml"});
+        res.write(data);
+      }else if (cssPattern.test(file)) {
+        res.writeHead(200, {"content-type": "text/css"});
+        res.write(data);
+      } else if (htmlPattern.test(file)) {
+        res.writeHead(200, {"content-type": "text/html"});
         res.write(data);
       }
     }
