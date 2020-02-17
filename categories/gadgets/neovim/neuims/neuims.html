@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <script src="/js/util.js"></script>
+
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.4.1.min.js"></script>
+  <script>
+    $(function() {
+      $("#header").load("/header.html")
+    });
+  </script>
+
+  <script>window.MathJax = {tex: {tags: "ams"}};</script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <title>Jihang Li - Gadgets - NeoVim</title>
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <div class="body-margin">
+    <h1 style="text-align: center">neuims: An Input Method Switcher for (Neo)Vim</h1>
+    <script>lastUpdateDate()</script>
+    <script>sourceLink("https://github.com/Neur1n/neuims")</script>
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#requirement">Requirement</a></li>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#usage">Usage</a></li>
+    </ul>
+
+    <!-- ======================================================= Background -->
+    <h2 id="background">Background</h2>
+    <p>
+      People who use CJK or other non-Latin input methods can relate how pain
+      it is to toggle input methods between insert and normal mode in (Neo)Vim.
+      The first time I came across this problem several years ago,
+      <a href="https://github.com/vimim/vimim" target="_blank">VimIM</a> was
+      the tool I found. But I always had problems with getting expected
+      candidates or setting up on a new machine. I read the manual but it
+      didn't change anything. (Yea, I must be dumb.) Also, the switching
+      performance of VimIM was poor, and I'm not sure about the reason - my
+      potato laptop, or the plugin itself. For a while, I use other editors
+      instead of Vim to do my "CJK" job.
+    </p>
+
+    <p>
+      But finally I have had enough of it, because I always accidentally typed
+      in "h", "j", "k", "l". A new search was started again. Tools like
+      <a href="https://github.com/rlue/vim-barbaric" target="_blank">vim-barbaric</a> and
+      <a href="https://github.com/lyokha/vim-xkbswitch" target="_blank">vim-xkbswitch</a>,
+      they don't have support for Windows OS or require the user to read the
+      manual for an hour and to configure for another.
+    </p>
+
+    <p>
+      I'm probably wrong about them, and actually, I just want to write some
+      code. So here is "neuims",
+      <a href="https://github.com/Neur1n" target="_blank"><strong>Neu</strong>r1n</a>'s
+      <strong>i</strong>nput <strong>m</strong>ethod <strong>s</strong>witcher.
+    </p>
+
+    <figure>
+      <!-- <center><img src="./screenshot.gif" alt="Screenshot"/></center> -->
+      <img src="./screenshot.gif" alt="Screenshot" class="img-center"/>
+    </figure>
+
+    <!-- ====================================================== Requirement -->
+    <h2 id="requirement">Requirement</h2>
+    <h3>Windows 10</h3>
+    <p>
+      Since I haven't found the proper command lines or functions for
+      batch/PowerShell scripts, Python is used instead. All you need is:
+    </p>
+
+    <ul>
+      <li>Python 3</li>
+      <li><a href="https://pypi.org/project/pynvim/" target="_blank">pynvim</a> >= 0.4.0</li>
+      <li><a href="https://pypi.org/project/pywin32/" target="_blank">pywin32</a> >= 227</li>
+    </ul>
+
+    <h3>Ubuntu 16.04</h3>
+    <p>
+      For Ubuntu 16.04, life is easier. The <code>ibus engine [ENGINE_NAME]</code>
+      command is called to switched the input method.
+    </p>
+
+    <!-- ===================================================== Installation -->
+    <h2 id="installation">Installation</h2>
+    <h3>vim-plug</h3>
+    <p>
+      Put
+    </p>
+
+    <pre>
+    Plug 'Neur1n/neuims'
+    </pre>
+
+    <p>
+      into your configuration file. But using the on-demand loading feature of
+      vim-plug is recommended:
+    </p>
+
+    <pre>
+    Plug 'Neur1n/neuims', {'on': 'IMSToggle'}
+    </pre>
+
+    <!-- ============================================================ Usage -->
+    <h2 id="usage">Usage</h2>
+  </div>
+</body>
+</html>
