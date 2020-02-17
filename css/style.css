@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Montserrat:500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Montserrat|Source+Code+Pro:500&display=swap');
 @import url("header.css");
 
 .body-margin {
@@ -59,14 +59,25 @@ body {
   margin: 0rem;  /*Set to 0 to make header 100% width.*/
 }
 
-h1, h2, h3, ul {
+pre {
+  background-color: #f2ecda;
+  border-radius: 0.5rem;
+  font-family: 'Source Code Pro', monospace;
+  margin: 0rem 1rem 0rem 1rem;
+  padding: 1.2rem 0rem 0rem 0rem;
+  vertical-align: text-bottom;
+  width: auto;
+}
+
+h1, h2, h3 {
   font-family: 'EB Garamond', serif;
 }
 
-ul {
-  font-size: 1.2rem;
+figure, p, ul {
+  font-family: 'Monsterrat', sans-serif;
 }
 
-figure, p {
-  font-family: 'Monsterrat', sans-serif;
+code {
+  background-color: #f2ecda;
+  font-family: 'Source Code Pro', monospace;
 }
