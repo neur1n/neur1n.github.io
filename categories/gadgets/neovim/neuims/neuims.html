@@ -38,6 +38,7 @@
       <li><a href="#requirement">Requirement</a></li>
       <li><a href="#installation">Installation</a></li>
       <li><a href="#usage">Usage</a></li>
+      <li><a href="#configuration">Configuration</a></li>
     </ul>
 
     <!-- ======================================================= Background -->
@@ -78,22 +79,21 @@
 
     <!-- ====================================================== Requirement -->
     <h2 id="requirement">Requirement</h2>
-    <h3>Windows 10</h3>
+    <h3>Windows 7/10</h3>
     <p>
-      Since I haven't found the proper command lines or functions for
-      batch/PowerShell scripts, Python is used instead. All you need is:
+      Currently this plugin is only tested on Windows 7 and 10. And since
+      commit
+      <a href="https://github.com/Neur1n/neuims/commit/fe2abf1c4f73f8538fd6eed972b5155546afeaeb" target="_blank">fe2abf1</a>,
+      Python dependencies were removed and a binary written in C++ is used
+      instead. The binary is static-linked, so it should work even there are no
+      VC++ redistributables installed in your system.
     </p>
 
-    <ul>
-      <li>Python 3</li>
-      <li><a href="https://pypi.org/project/pynvim/" target="_blank">pynvim</a> >= 0.4.0</li>
-      <li><a href="https://pypi.org/project/pywin32/" target="_blank">pywin32</a> >= 227</li>
-    </ul>
-
-    <h3>Ubuntu 16.04</h3>
+    <h3>Linux/Unix</h3>
     <p>
-      For Ubuntu 16.04, life is easier. The <code>ibus engine [ENGINE_NAME]</code>
-      command is called to switched the input method.
+      Currently this plugin is only test on Ubuntu 16.04, and it is limited to
+      IBus. The <code>ibus engine [ENGINE_NAME]</code> command is called to
+      switched the input method.
     </p>
 
     <!-- ===================================================== Installation -->
@@ -118,6 +118,106 @@
 
     <!-- ============================================================ Usage -->
     <h2 id="usage">Usage</h2>
+    <h3>Enable</h3>
+    <p>
+      This plugin needs to be manually enabled before being used to switch
+      input methods. There are two ways to enable:
+    </p>
+
+    <ul>
+      <li>Using the command <code>:IMSToggle</code></li>
+      <li>
+        Calling the function <code>neuims#Toggle()</code>, or using a key
+        mapping, e.g.:
+      </li>
+    </ul>
+
+    <pre>
+    nnoremap &lt;silent&gt; &lt;leader&gt;it :call neuims#Toggle()&lt;CR&gt;
+    </pre>
+
+    <h3>Disable</h3>
+    <p>
+      While in enabled status (can be checked with
+      <code>:echo g:neuims.status</code>), use <code>:IMSToggle</code> or press
+      <code>&lt;leader&gt;it</code> again.
+    </p>
+
+    <h3>Switch</h3>
+    <p>
+      Usually, the switching is automatically controlled by the
+      <code>InsertEnter</code> and <code>InsertLeave</code> event. However, one
+      may call the function <code>neuims#Switch(0)</code> to switch manually,
+      or using a key mapping, e.g.:
+    </p>
+
+    <pre>
+      nnoremap &lt;silent&gt; &lt;leader&gt;is :call neuims#Switch()&lt;CR&gt;
+    </pre>
+
+    <!-- ===================================================== Configuration -->
+    <h2 id="configuration">Configuration</h2>
+    <p>
+      There are default configurations in the source code:
+    </p>
+
+    <pre>
+    let s:win = {
+          \ 'im': 'US Keyboard',
+          \ 'status': 0,
+          \ 'keyboards': {
+          \   'US Keyboard': 0x0409,
+          \   'Microsoft Pinyin': 0x0804,
+          \ },
+          \ }
+
+    let s:ibus = {
+          \ 'im': 'English (US)',
+          \ 'status': 0,
+          \ 'keyboards': {
+          \   'English (US)': 'xkb:us::eng',
+          \   'Pinyin': 'pinyin',
+          \ },
+          \ }
+    </pre>
+
+    <p>
+      This should work well with Windows's (7/10) and Ubuntu's (16.04) built-in
+      input methods. Let's break it down:
+    </p>
+
+    <ul>
+      <li>
+        im: The input method specified here should be the "default" one, which
+        is the one in normal mode.
+      </li>
+      <li>
+        status: 0 means neuims is not enabled, 1 means neuims is enabled. It is
+        controlled by the plugin itself, the user shall not care about it.
+      </li>
+      <li>
+        keyboards: The two input methods one wants to use in normal/insert mode
+        should be specified here, one of which must have the same name of that
+        in "im". For example, if im is specified as "English (US)", then there
+        has to be "English (US)" in "keyboards".
+      </li>
+    </ul>
+
+    <p>
+      For example, if one uses <a href="https://rime.im/" target="_blank">RIME</a>
+      (IBus based) in Ubuntu, the configuration may be:
+    </p>
+
+    <pre>
+    let g:neuims = {
+          \ 'im': 'English (US)',
+          \ 'status': 0,
+          \ 'keyboards': {
+          \   'English (US)': 'xkb:us::eng',
+          \   'Rime': 'rime',
+          \ },
+          \ }
+    </pre>
   </div>
 </body>
 </html>
