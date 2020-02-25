@@ -28,6 +28,7 @@
 
   <div class="body-margin">
     <h1 style="text-align:center">Concepts and Representations in Vision and Cognition</h1>
+    <script>lastUpdateDate()</script>
     <hr>
 
     <h2>Contents</h2>
@@ -60,6 +61,12 @@
         <li><a href="#4_recursive_algorithm">4 Recursive Top-down / Bottom-up Algorithm for Image Parsing</a></li>
         <li><a href="#5_a_aog">5 Attributed And-Or Graph</a></li>
         <li><a href="#6_t_aog">6 Temporal And-Or Graph</a></li>
+        <ul>
+          <li><a href="#6_1_atomic_action">6.1 A Simplified Atomic Action Model</a></li>
+          <ul>
+            <li><a href="#6_1_1_grounded_relations">6.1.1 Grounded Relations - The Alphabet</a></li>
+          </ul>
+        </ul>
         <li><a href="#7_c_aog">7 Fluent and Causal And-Or Graph</a></li>
         <li><a href="#8_joint_parsing">8 Joint Parsing</a></li>
       </ul>
@@ -91,6 +98,195 @@
 
     <!-- ======================================================== Chapter 6 -->
     <h2 id="6_t_aog">6 Temporal And-Or Graph</h2>
+    <p>
+      This chapter presents stochastic Temporal And-Or Graph (T-AOG) to
+      represent the hierarchical compositions of events and the temporal
+      relations between the sub-events.
+    </p>
+
+    <h3 id="6_1_atomic_action">6.1 A Simplified Atomic Action Model</h3>
+    <h4 id="6_1_1_grounded_relations">6.1.1 Grounded Relations - the Alphabet</h4>
+    <p>
+      The T-AOG is defined on a set of unary and binary relations which can be
+      directly detected from video. These relations are called the
+      <em>grounded relations</em>:
+    </p>
+
+    <ul>
+      <li>
+        A unary relation \(r(A)\) is a time varying property of the agent or
+        object \(A\) in the scene. As Figure <a href="#fig_6_1">6.1</a> shows,
+        it could be agent poses, e.g. Stand(person1) and Bend(person2), and
+        object states, e.g.  Open(door) and Closed(door).
+      </li>
+      <li>
+        A binary relation \(r(A,B)\) is the spatial relation (e.g.
+        Touch(person1.hand, phone)) between \(A\), \(B\) which could be agents,
+        body parts (hands, feet), and objects. Figure
+        <a href="#fig_6_2">6.2</a> illustrates some typical binary relations.
+      </li>
+    </ul>
+
+    <figure>
+      <img id="fig_6_1" src="./figures/fig_6_1.png" alt="Unary Relations" class="img-center" style="height: 50%; width: 50%">
+      <figcaption>
+        Figure 6.1: Some unary relations. The left part of the table shows the
+        four unary relations as agent poses, including 'Stand', 'Stretch',
+        'Bend' and 'Sit'. The right part shows the two fluents ('On' and 'Off')
+        of the phone and the screen of laptop.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img id="fig_6_2" src="./figures/fig_6_2.png" alt="Binary Relations" class="img-center" style="height: 50%; width: 50%">
+      <figcaption>
+        Figure 6.2: Some binary relations between agents (parts) and background
+        objects.
+      </figcaption>
+    </figure>
+
+    <p>
+      Table <a href="#table_6_1">6.1</a> specifies the 24 unary and binary
+      relations in the office scene. There are four types of relations: agent
+      location (\(r_{01}\) ~ \(r_{13}\)), agent-environment interaction
+      (\(r_{14}\) ~ \(r_{17}\)), agent pose (\(r_{18}\) ~ \(r_{21}\)) and
+      environment event (\(r_{22}\) ~ \(r_{24}\)). Here we do not use the "Off"
+      relation as shown in Figure <a href="#fig_6_2">6.2</a> since we can infer
+      the status of "Off" from the status of "On".
+    </p>
+
+    <table id="table_6_1" rules="all" style="margin-left: auto; margin-right: auto;">
+      <caption>
+        Table 6.1: The grounded spatial relations of T-AOG: directly detectable
+        from video.
+      </caption>
+      <tr><th>Type</th> <th>Name</th> <th>Definition</th> <th>Description</th></tr>
+      <tr>
+        <th rowspan="13">Location</th>
+        <td>\(r_{01}\)</td>
+        <td>absent(agent)</td>
+        <td>not found in the frame</td>
+      </tr>
+      <tr>
+        <td>\(r_{02}\)</td>
+        <td>near(agent, other_agent)</td>
+        <td>near other agent</td>
+      </tr>
+      <tr>
+        <td>\(r_{03}\)</td>
+        <td>near(agent, board)</td>
+        <td>near the white board</td>
+      </tr>
+      <tr>
+        <td>\(r_{04}\)</td>
+        <td>near(agent, door)</td>
+        <td>near the door</td>
+      </tr>
+      <tr>
+        <td>\(r_{05}\)</td>
+        <td>near(agent, dispenser)</td>
+        <td>near the water dispenser</td>
+      </tr>
+      <tr>
+        <td>\(r_{06}\)</td>
+        <td>near(agent, trash_can)</td>
+        <td>near the trash can</td>
+      </tr>
+      <tr>
+        <td>\(r_{07}\)</td>
+        <td>near(agent, mug)</td>
+        <td>near the mug</td>
+      </tr>
+      <tr>
+        <td>\(r_{08}\)</td>
+        <td>near(agent, laptop)</td>
+        <td>near the laptop</td>
+      </tr>
+      <tr>
+        <td>\(r_{09}\)</td>
+        <td>near(agent, phone)</td>
+        <td>near the phone</td>
+      </tr>
+      <tr>
+        <td>\(r_{10}\)</td>
+        <td>near(agent, basin)</td>
+        <td>near the basin</td>
+      </tr>
+      <tr>
+        <td>\(r_{11}\)</td>
+        <td>near(agent, microwave)</td>
+        <td>near the microwave</td>
+      </tr>
+      <tr>
+        <td>\(r_{12}\)</td>
+        <td>near(agent, tea_box)</td>
+        <td>near the tea box</td>
+      </tr>
+      <tr>
+        <td>\(r_{13}\)</td>
+        <td>in(agent, door)</td>
+        <td>agent is in the door</td>
+      </tr>
+      <tr>
+        <th rowspan="4">Interaction</th>
+        <td>\(r_{14}\)</td>
+        <td>touch(agent, keyboard)</td>
+        <td>typing on keyboard</td>
+      </tr>
+      <tr>
+        <td>\(r_{15}\)</td>
+        <td>touch(agent, mug)</td>
+        <td>grabbing the mug</td>
+      </tr>
+      <tr>
+        <td>\(r_{16}\)</td>
+        <td>touch(agent, phone)</td>
+        <td>grabbing the phone</td>
+
+      </tr>
+      <tr>
+        <td>\(r_{17}\)</td>
+        <td>touch(agent, tea_box)</td>
+        <td>grabbing the tea box</td>
+      </tr>
+      <tr>
+        <th rowspan="4">Pose</th>
+        <td>\(r_{18}\)</td>
+        <td>bend(agent)</td>
+        <td>bend down</td>
+      </tr>
+      <tr>
+        <td>\(r_{19}\)</td>
+        <td>sit(agent)</td>
+        <td>sitting on something</td>
+      </tr>
+      <tr>
+        <td>\(r_{20}\)</td>
+        <td>raise_arm(agent)</td>
+        <td>raising arm</td>
+      </tr>
+      <tr>
+        <td>\(r_{21}\)</td>
+        <td>stand(agent)</td>
+        <td>standing straight</td>
+      </tr>
+      <tr>
+        <th rowspan="3">Environment Event</th>
+        <td>\(r_{22}\)</td>
+        <td>occlude(soccer match, screen)</td>
+        <td>soccer match on the screen</td>
+      </tr>
+      <tr>
+        <td>\(r_{23}\)</td>
+        <td>on(phone)</td>
+        <td>phone is in use</td>
+      </tr>
+      <tr>
+        <td>\(r_{24}\)</td>
+        <td>on(screen)</td>
+        <td>screen is on</td>
+      </tr>
+    </table>
 
     <!-- ======================================================== Chapter 7 -->
     <h2 id="7_c_aog">7 Fluent and Causal And-Or Graph</h2>
