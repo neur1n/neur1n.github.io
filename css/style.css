@@ -59,6 +59,11 @@ body {
   margin: 0rem;  /*Set to 0 to make header 100% width.*/
 }
 
+hr.part {
+  border-top: double;
+  width: 80%;
+}
+
 pre {
   background-color: #f2ecda;
   border-radius: 0.5rem;
@@ -67,6 +72,10 @@ pre {
   padding: 1.2rem 0rem 0rem 0rem;
   vertical-align: text-bottom;
   width: auto;
+}
+
+td, th {
+  padding: 0.5rem;
 }
 
 h1, h2, h3 {
@@ -80,8 +89,4 @@ figure, p, ul {
 code {
   background-color: #f2ecda;
   font-family: 'Source Code Pro', monospace;
-}
-
-td, th {
-  padding: 0.5rem;
 }
