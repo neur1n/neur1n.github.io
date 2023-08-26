@@ -7,7 +7,16 @@
 
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-  <title>Jihang Li - Notes</title>
+  <title>Jihang Li - Notes on Implementing P3</title>
+
+  <script>
+    window.addEventListener("message", function (event) {
+      console.log(event.data);
+      if (event.data === "toggle") {
+        document.body.classList.toggle("light-theme");
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -28,65 +37,69 @@
 
     <h2 id="data-preprocessing">Data Preprocessing</h2>
     <p>
-    Before partitioning, it is crucial to ensure that the node labels in the
-    DGL graph are stored for future usage:
+      Before partitioning, it is crucial to ensure that the node labels in the
+      DGL graph are stored for future usage:
     </p>
 
     <pre>
-      <code>
-        from dgl.distributed import partition_graph
-        from ogb.nodeproppred import DglNodePropPredDataset
-        import dgl
+from dgl.distributed import partition_graph
+from ogb.nodeproppred import DglNodePropPredDataset
+import dgl
 
-        dataset = DglNodePropPredDataset("ogbn-arxiv")
+dataset = DglNodePropPredDataset("ogbn-arxiv")
 
-        graph, node_labels = dataset[0]
-        graph = dgl.add_reverse_edges(graph)
+graph, node_labels = dataset[0]
+graph = dgl.add_reverse_edges(graph)
 
-        graph.ndata["label"] = node_labels[:, 0]
-      </code>
+graph.ndata["label"] = node_labels[:, 0]
     </pre>
 
     <p>
-    It is worth noting that the current documentation does not explicitly
-    outline the necessity of this step. As a result, it is easy to overlook,
-    potentially leading to issues when attempting to use code copied from DGL's
-    documentation, as the absence of this step can impede its functionality.
+      It is worth noting that the current documentation does not explicitly
+      outline the necessity of this step. As a result, it is easy to overlook,
+      potentially leading to issues when attempting to use code copied from
+      DGL's documentation, as the absence of this step can impede its
+      functionality.
     </p>
 
     <h2 id="forward-pass">Forward Pass</h2>
     <p>
-    There are at least two ways to implement the forward pass as P<sup>3</sup>
-    does, modifying DGL's built-in class or implement a new class from scratch.
+      There are at least two ways to implement the forward pass as P<sup>3</sup>
+      does, modifying DGL's built-in class or implement a new class from scratch.
     </p>
 
     <h3>Modifying DGL</h3>
     <p>
-    To modify DGL's classes to allow switching between model parallelism and
-    data parallelism, we need to find the right position to insert scatter and
-    gather operations. In DGL, the forward pass is done by calling the
-    <tt>dgl.heterograph.DGLGraph.update_all</tt> function, of which the call
-    stack is:
+      To modify DGL's classes to enable the switching between model parallelism
+      and data parallelism, it is essential to identify the appropriate points
+      for inserting scatter and gather operations. Within DGL, the forward pass
+      is accomplished by invoking the <tt>dgl.heterograph.DGLGraph.update_all</tt>
+      function, which follows this call stack:
     </p>
 
     <pre>
-      dgl.heterograph.DGLGraph.update_all
-      |- dgl.core.message_passing
-         |  |- dgl.core.invoke_gspmm: if message and reduce functions are both built-in
-         |                            else
-         |- dgl.core.invoke_gsddmm:   message
-            dgl.core.invoke_gspmm:    reduce
+dgl.heterograph.DGLGraph.update_all
+|- dgl.core.message_passing
+   |  |- dgl.core.invoke_gspmm: if message and reduce are built-in
+   |                            else
+   |- dgl.core.invoke_gsddmm:   message
+      dgl.core.invoke_gspmm:    reduce
     </pre>
 
     <p>
-    DGL's built-in message and reduce functions are easy to re-implement which
-    allows us to always perform forward pass by calling
-    <tt>dgl.core.invoke_gsddmm</tt> and <tt>dgl.core.invoke_gspmm</tt>. Between
-    this two functions is the position where we need to insert scatter and
-    gather functions.
+      Re-implementing DGL's built-in message and reduce functions is a
+      straightforward process, enabling us to consistently carry out the
+      forward pass by invoking <tt>dgl.core.invoke_gsddmm</tt> and
+      <tt>dgl.core.invoke_gspmm</tt>. The critical point for inserting scatter
+      and gather functions lies between these two operations. This is where we
+      can customize the behavior to seamlessly switch between model parallelism
+      and data parallelism based on our requirements.
     </p>
 
     <h3>Implementing New Classes</h3>
+    <p>
+    Please visit the <a href="https://github.com/neur1n/p3" target="_blank">code</a>.
+    </p>
   </div>
 </body>
 </html>

@@ -6,6 +6,13 @@
   <meta name=viewport content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" type="text/css" href="/css/header.css">
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-theme");
+      window.parent.postMessage("toggle", "*")
+    }
+  </script>
 </head>
 
 <body class="header-body">
@@ -13,9 +20,11 @@
     <img src="/image/empty.svg" alt="emptiness" class="header-image">
 
     <div>
-      <h1 style="margin:0;padding:0;">Jihang Li</h1>
-      <h4>PhD Student at HKUST-GZ</h5>
+      <h1 class="header-name">Jihang Li</h1>
+      <h4 class="header-occupation">PhD Student at HKUST-GZ</h5>
     </div>
+    <button onclick="toggleTheme()">WTF</button>
+
   </div>
 
   <div class="header-nav">
@@ -27,10 +36,6 @@
           <th class="header-text">│</th>
           <th width=2%></th>
           <th class="header-text"><a href="/content/notes/notes.html" target="_top">Notes</a></th>
-          <th width=2%></th>
-          <th class="header-text">│</th>
-          <th width=2%></th>
-          <th class="header-text"><a href="/content/gadgets/gadgets.html" target="_top">Gadgets</a></th>
         </tr>
       </thead>
     </table>

@@ -1,4 +1,5 @@
 @import url("font.css");
+@import url("theme.css");
 
 a:link {
   color: #5f87ff;
@@ -10,76 +11,35 @@ a:visited {
 }
 
 body {
-  max-width: 50%;
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  font-family: "EBGaramond", sans-serif;
+  max-width: 80ch;
   margin: 0 auto;
   padding: 2em;
-
-  background-color: #1f1f2a;
-  color: #cccccc;
-
-  font-family: "EBGaramond";
-
-  overflow-wrap: break-word;
+  text-align: justify;
   word-wrap: break-word;
 }
 
-code, pre, tt {
-  font-family: "VT323";
+code, pre {
+  color: var(--em-color);
+  display: flex;
+  font-family: "VT323", monospace;
+  justify-content: center;
+  word-wrap: break-word;
+}
 
-  color: #fafafa;
-
-  overflow-wrap: break-word;
+tt {
+  color: var(--em-color);
+  font-family: "VT323", monospace;
   word-wrap: break-word;
 }
 
 .header {
-  width: 100%;
   margin-bottom: 1em;
+  width: 100%;
 }
 
-.brand {
-  display: flex;
-  align-items: left;
-  text-align: left;
-
-  font-family: "EBGaramond";
-}
-
-/* .nav-bar { */
-/*   color: #1f1f2a; */
-/*   background-color: #aaaaaa; */
-/**/
-/*   font-family: "EBGaramond", sans-serif; */
-/*   font-size: 10rem; */
-/*   font-variant: small-caps; */
-/* } */
-
-/* .body-margin { */
-/*   margin: 2rem; */
-/* } */
-
-/* .img-center { */
-/*   display: block; */
-/*   margin-left: auto; */
-/*   margin-right: auto; */
-/* } */
-/**/
-/* .nav-bar-link { */
-/*   text-decoration: none; */
-/*   color: #fffffe; */
-/* } */
-/**/
-/* .p-link { */
-/*   text-decoration: none; */
-/*   color: #282828; */
-/* } */
-/**/
-/* .pdf { */
-/*   height: 50em; */
-/*   width: 90%; */
-/*   float: middle; */
-/* } */
-/**/
 /* .tooltip { */
 /*   position: relative; */
 /*   display: inline-block; */
