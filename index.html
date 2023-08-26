@@ -3,25 +3,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.4.1.min.js"></script>
-  <script>
-    $(function() {
-      $("#header").load("/header.html")
-    });
-  </script>
-
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 
   <title>Jihang Li</title>
 </head>
 
-<body>
-  <div id="header"></div>
 
-  <div class="body-margin">
-    <p>Hello World!</p>
-  </div>
+<body>
+  <object type="text/html" data="/header.html" class="header"></object>
+
+  <p>Hello World!</p>
 </body>
 </html>

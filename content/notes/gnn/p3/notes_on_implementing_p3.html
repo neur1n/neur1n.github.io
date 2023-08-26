@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <title>Jihang Li - Notes</title>
+</head>
+
+<body>
+  <object type="text/html" data="/header.html" class="header"></object>
+
+  <div>
+    <h1>Notes on Implementing P<sup>3</sup></h1>
+
+    <ul>
+      <li><a href="#data-preprocessing">Data Preprocessing</a></li>
+      <li><a href="#forward-pass">Forward Pass</tt></a></li>
+    </ul>
+
+    This note presumes that the reader has finished reading the
+    <a href="https://docs.dgl.ai/tutorials/blitz/index.html">A Blitz Introduction to DGL</a>
+    and the <a href="https://docs.dgl.ai/tutorials/dist/1_node_classification.html">Distributed Node Classification</a>
+    documentations, and the contents are based on node classification only.
+
+    <h2 id="data-preprocessing">Data Preprocessing</h2>
+    <p>
+    Before partitioning, it is crucial to ensure that the node labels in the
+    DGL graph are stored for future usage:
+    </p>
+
+    <pre>
+      <code>
+        from dgl.distributed import partition_graph
+        from ogb.nodeproppred import DglNodePropPredDataset
+        import dgl
+
+        dataset = DglNodePropPredDataset("ogbn-arxiv")
+
+        graph, node_labels = dataset[0]
+        graph = dgl.add_reverse_edges(graph)
+
+        graph.ndata["label"] = node_labels[:, 0]
+      </code>
+    </pre>
+
+    <p>
+    It is worth noting that the current documentation does not explicitly
+    outline the necessity of this step. As a result, it is easy to overlook,
+    potentially leading to issues when attempting to use code copied from DGL's
+    documentation, as the absence of this step can impede its functionality.
+    </p>
+
+    <h2 id="forward-pass">Forward Pass</h2>
+    <p>
+    There are at least two ways to implement the forward pass as P<sup>3</sup>
+    does, modifying DGL's built-in class or implement a new class from scratch.
+    </p>
+
+    <h3>Modifying DGL</h3>
+    <p>
+    To modify DGL's classes to allow switching between model parallelism and
+    data parallelism, we need to find the right position to insert scatter and
+    gather operations. In DGL, the forward pass is done by calling the
+    <tt>dgl.heterograph.DGLGraph.update_all</tt> function, of which the call
+    stack is:
+    </p>
+
+    <pre>
+      dgl.heterograph.DGLGraph.update_all
+      |- dgl.core.message_passing
+         |  |- dgl.core.invoke_gspmm: if message and reduce functions are both built-in
+         |                            else
+         |- dgl.core.invoke_gsddmm:   message
+            dgl.core.invoke_gspmm:    reduce
+    </pre>
+
+    <p>
+    DGL's built-in message and reduce functions are easy to re-implement which
+    allows us to always perform forward pass by calling
+    <tt>dgl.core.invoke_gsddmm</tt> and <tt>dgl.core.invoke_gspmm</tt>. Between
+    this two functions is the position where we need to insert scatter and
+    gather functions.
+    </p>
+
+    <h3>Implementing New Classes</h3>
+  </div>
+</body>
+</html>

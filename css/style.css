@@ -1,92 +1,145 @@
-@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Montserrat|Source+Code+Pro:500&display=swap');
-@import url("header.css");
+@import url("font.css");
 
-.body-margin {
-  margin: 2rem;
-}
-
-.img-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.nav-bar-link {
+a:link {
+  color: #5f87ff;
   text-decoration: none;
-  color: #fdf6e3;
 }
 
-.p-link {
-  text-decoration: none;
-  color: #282828;
-}
-
-.pdf {
-  height: 50em;
-  width: 90%;
-  float: middle;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 0.1rem dotted #000000;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: auto;
-  background-color: #b2aea2;
-  color: #fdf6e3;
-  text-align: center;
-  font-size: 1rem;
-  padding: 0.1rem 0.2rem 0.1rem 0.2rem;
-  border-radius: 0.2rem;
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
-a {
-  text-decoration: none;
+a:visited {
+  color: #ff875f;
 }
 
 body {
-  background-color: #fdf6e3;
-  margin: 0rem;  /*Set to 0 to make header 100% width.*/
+  max-width: 50%;
+  margin: 0 auto;
+  padding: 2em;
+
+  background-color: #1f1f2a;
+  color: #cccccc;
+
+  font-family: "EBGaramond";
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-hr.part {
-  border-top: double;
-  width: 80%;
+code, pre, tt {
+  font-family: "VT323";
+
+  color: #fafafa;
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-pre {
-  background-color: #f2ecda;
-  border-radius: 0.5rem;
-  font-family: 'Source Code Pro', monospace;
-  margin: 0rem 1rem 0rem 1rem;
-  padding: 1.2rem 0rem 0rem 0rem;
-  vertical-align: text-bottom;
-  width: auto;
+.header {
+  width: 100%;
+  margin-bottom: 1em;
 }
 
-td, th {
-  padding: 0.5rem;
+.brand {
+  display: flex;
+  align-items: left;
+  text-align: left;
+
+  font-family: "EBGaramond";
 }
 
-h1, h2, h3 {
-  font-family: 'EB Garamond', serif;
-}
+/* .nav-bar { */
+/*   color: #1f1f2a; */
+/*   background-color: #aaaaaa; */
+/**/
+/*   font-family: "EBGaramond", sans-serif; */
+/*   font-size: 10rem; */
+/*   font-variant: small-caps; */
+/* } */
 
-figure, p, ul {
-  font-family: 'Monsterrat', sans-serif;
-}
+/* .body-margin { */
+/*   margin: 2rem; */
+/* } */
 
-code {
-  background-color: #f2ecda;
-  font-family: 'Source Code Pro', monospace;
-}
+/* .img-center { */
+/*   display: block; */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/* } */
+/**/
+/* .nav-bar-link { */
+/*   text-decoration: none; */
+/*   color: #fffffe; */
+/* } */
+/**/
+/* .p-link { */
+/*   text-decoration: none; */
+/*   color: #282828; */
+/* } */
+/**/
+/* .pdf { */
+/*   height: 50em; */
+/*   width: 90%; */
+/*   float: middle; */
+/* } */
+/**/
+/* .tooltip { */
+/*   position: relative; */
+/*   display: inline-block; */
+/*   border-bottom: 0.1rem dotted #000000; */
+/* } */
+/**/
+/* .tooltip .tooltiptext { */
+/*   visibility: hidden; */
+/*   width: auto; */
+/*   background-color: #b2aea2; */
+/*   color: #fffffe; */
+/*   text-align: center; */
+/*   font-size: 1rem; */
+/*   padding: 0.1rem 0.2rem 0.1rem 0.2rem; */
+/*   border-radius: 0.2rem; */
+/*   position: absolute; */
+/*   z-index: 1; */
+/* } */
+/**/
+/* .tooltip:hover .tooltiptext { */
+/*   visibility: visible; */
+/* } */
+/**/
+/* a { */
+/*   text-decoration: none; */
+/* } */
+/**/
+/* body { */
+/*   background-color: #fffffe; */
+/*   margin: 10rem;  /*Set to 0 to make header 100% width.*/ */
+/* } */
+/**/
+/* hr.part { */
+/*   border-top: double; */
+/*   width: 80%; */
+/* } */
+/**/
+/* pre { */
+/*   background-color: #f2ecda; */
+/*   border-radius: 0.5rem; */
+/*   font-family: 'Source Code Pro', monospace; */
+/*   margin: 0rem 1rem 0rem 1rem; */
+/*   padding: 1.2rem 0rem 0rem 0rem; */
+/*   vertical-align: text-bottom; */
+/*   width: auto; */
+/* } */
+/**/
+/* td, th { */
+/*   padding: 0.5rem; */
+/* } */
+/**/
+/* h1, h2, h3 { */
+/*   font-family: 'EBGaramond', serif; */
+/* } */
+/**/
+/* figure, p, ul { */
+/*   font-family: 'Monsterrat', sans-serif; */
+/* } */
+/**/
+/* code { */
+/*   background-color: #f2ecda; */
+/*   font-family: 'Source Code Pro', monospace; */
+/* } */

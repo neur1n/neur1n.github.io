@@ -1,26 +1,41 @@
-.header-img-empty {
-  display: block;
-  height: 100%;
-  width: 100%;
-  margin-top: auto;
-  margin-bottom: -70.3%;
-  margin-left: -14.5%;
-  margin-right: auto;
-  clip-path: polygon(14.5% 0%, 100% 0%, 100% 30%, 14.5% 30%)
+@import url("font.css");
+
+html {
+  overflow: hidden;
 }
 
-.header-text {
-  font-family: 'EB Garamond', serif;
-  font-size: 2rem;
+a:link {
+  color: #5f87ff;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #5f87ff;
+}
+
+.header-body {
+  margin: 0 auto;
+  padding: 0;
+
+  color: #fafafa;
+
+  font-family: "EBGaramond", sans-serif;
   font-variant: small-caps;
-  color: #f9f5d7;
 }
 
-.header-link {
-  text-decoration: none;
-  color: #f9f5d7;
+.header-image {
+  margin-right: 2em;
+  width: 100px;
+  height: 100px;
 }
 
-a {
-  text-decoration: none;
+.header-info {
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.header-nav {
+  margin-top: 0em;
+  margin-bottom: 0em;
 }
