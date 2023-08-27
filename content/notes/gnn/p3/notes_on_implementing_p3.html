@@ -8,15 +8,6 @@
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 
   <title>Jihang Li - Notes on Implementing P3</title>
-
-  <script>
-    window.addEventListener("message", function (event) {
-      console.log(event.data);
-      if (event.data === "toggle") {
-        document.body.classList.toggle("light-theme");
-      }
-    });
-  </script>
 </head>
 
 <body>
@@ -24,6 +15,10 @@
 
   <div>
     <h1>Notes on Implementing P<sup>3</sup></h1>
+
+    <script>
+      document.write(document.lastModified);
+    </script>
 
     <ul>
       <li><a href="#data-preprocessing">Data Preprocessing</a></li>
@@ -80,10 +75,11 @@ graph.ndata["label"] = node_labels[:, 0]
     <pre>
 dgl.heterograph.DGLGraph.update_all
 |- dgl.core.message_passing
-   |  |- dgl.core.invoke_gspmm: if message and reduce are built-in
-   |                            else
-   |- dgl.core.invoke_gsddmm:   message
-      dgl.core.invoke_gspmm:    reduce
+   |  |- dgl.core.invoke_gspmm:  if message and reduce are built-in
+   |
+   |                             else
+   |---- dgl.core.invoke_gsddmm: message
+         dgl.core.invoke_gspmm:  reduce
     </pre>
 
     <p>
@@ -98,7 +94,74 @@ dgl.heterograph.DGLGraph.update_all
 
     <h3>Implementing New Classes</h3>
     <p>
-    Please visit the <a href="https://github.com/neur1n/p3" target="_blank">code</a>.
+      Let us take a look at P<sup>3</sup>'s pipeline strategy (Figure 6 in paper).
+    </p>
+
+    <img src="/content/notes/gnn/p3/image/fiture_6.png" alt="figure 6" style="width:80%">
+
+    <p>
+      Upon a glance, an evident pattern emerges, excluding batches 1 and 2. The
+      pipelining strategy consistently follows a systematic four-step sequence:
+    </p>
+
+    <ol>
+      <li>batch<sub>n</sub>: Model parallelism forward pass.</li>
+      <li>batch<sub>n-1</sub>: Data parallelism forward pass.</li>
+      <li>batch<sub>n-1</sub>: Data parallelism backward pass.</li>
+      <li>batch<sub>n-2</sub>: Model parallelism backward pass.</li>
+    </ol>
+
+    <p>
+      Adhering to this distinct pattern, my current design takes shape:
+    </p>
+
+    <pre>
+class SAGEConv(object):
+    def __init__(self):
+        self._job_thd = threading.Thread(target=self._handle_job)
+        self._scatter_thd = threading.Thread(target=self._handle_scatter)
+        self._gather_thd = threading.Thread(target=self._handle_gather)
+        self._transform_thd = threading.Thread(target=self._handle_transform)
+        self._sync_thd = threading.Thread(target=self._handle_sync)
+        self._apply_thd = threading.Thread(target=self._handle_apply)
+
+        self._jobs = [None, None, None]  # Intermediate data of 3 batches
+        self._scatter_que = queue.Queue()
+        self._gather_que = queue.Queue()
+        self._transform_que = queue.Queue()
+        self._sync_que = queue.Queue()
+        self._apply_que = queue.Queue()
+        self._output_que = queue.Queue()
+
+  def forward(self, ...):
+      # Push data (i.e., graph, features and other necessary data) to self._jobs.
+      # Return result once there is a new data apperas in self._output_que.
+
+  def _handle_job(self):
+      # Get data from self._jobs and push them to the appropriate queues accordingly.
+
+  def _handle_scatter(self):
+      # Get data from self._scatter_que and perform scatter.
+
+  def _handle_gather(self):
+      # Get data from self._gather_que and perform gather.
+
+  def _transform_gather(self):
+      # Get data from self._transform_que and perform transform.
+
+  def _handle_sync(self):
+      # Get data from self._sync_que and perform synchronization.
+
+  def _handle_apply(self):
+      # Get data from self._apply_que and perform apply.
+      # Then push the result to self._output_que.
+    </pre>
+
+    <p>
+      Please visit the <a href="https://github.com/neur1n/p3" target="_blank">code</a>
+      for implementation details. However, it is important to note that the
+      backward pass process might necessitate a customized approach which I
+      have not done yet.
     </p>
   </div>
 </body>

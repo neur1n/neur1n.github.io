@@ -14,10 +14,10 @@ body {
   background-color: var(--bg-color);
   color: var(--fg-color);
   font-family: "EBGaramond", sans-serif;
-  max-width: 80ch;
+  max-width: 50%;
+  min-width: 60ch;
   margin: 0 auto;
   padding: 2em;
-  text-align: justify;
   word-wrap: break-word;
 }
 
@@ -27,6 +27,17 @@ code, pre {
   font-family: "VT323", monospace;
   justify-content: center;
   word-wrap: break-word;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
+}
+
+p {
+  text-align: justify;
 }
 
 tt {
@@ -39,67 +50,3 @@ tt {
   margin-bottom: 1em;
   width: 100%;
 }
-
-/* .tooltip { */
-/*   position: relative; */
-/*   display: inline-block; */
-/*   border-bottom: 0.1rem dotted #000000; */
-/* } */
-/**/
-/* .tooltip .tooltiptext { */
-/*   visibility: hidden; */
-/*   width: auto; */
-/*   background-color: #b2aea2; */
-/*   color: #fffffe; */
-/*   text-align: center; */
-/*   font-size: 1rem; */
-/*   padding: 0.1rem 0.2rem 0.1rem 0.2rem; */
-/*   border-radius: 0.2rem; */
-/*   position: absolute; */
-/*   z-index: 1; */
-/* } */
-/**/
-/* .tooltip:hover .tooltiptext { */
-/*   visibility: visible; */
-/* } */
-/**/
-/* a { */
-/*   text-decoration: none; */
-/* } */
-/**/
-/* body { */
-/*   background-color: #fffffe; */
-/*   margin: 10rem;  /*Set to 0 to make header 100% width.*/ */
-/* } */
-/**/
-/* hr.part { */
-/*   border-top: double; */
-/*   width: 80%; */
-/* } */
-/**/
-/* pre { */
-/*   background-color: #f2ecda; */
-/*   border-radius: 0.5rem; */
-/*   font-family: 'Source Code Pro', monospace; */
-/*   margin: 0rem 1rem 0rem 1rem; */
-/*   padding: 1.2rem 0rem 0rem 0rem; */
-/*   vertical-align: text-bottom; */
-/*   width: auto; */
-/* } */
-/**/
-/* td, th { */
-/*   padding: 0.5rem; */
-/* } */
-/**/
-/* h1, h2, h3 { */
-/*   font-family: 'EBGaramond', serif; */
-/* } */
-/**/
-/* figure, p, ul { */
-/*   font-family: 'Monsterrat', sans-serif; */
-/* } */
-/**/
-/* code { */
-/*   background-color: #f2ecda; */
-/*   font-family: 'Source Code Pro', monospace; */
-/* } */

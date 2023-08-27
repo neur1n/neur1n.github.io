@@ -4,9 +4,14 @@
   --fg-color: #cccccc;
 }
 
+.dark-theme {
+  --bg-color: #1f1f2a;
+  --em-color: #fafafa;
+  --fg-color: #cccccc;
+}
+
 .light-theme {
   --bg-color: #fffff0;
   --em-color: #050505;
-  --fg-color: #1f1f2a;
+  --fg-color: #1f1f2a
 }
-
