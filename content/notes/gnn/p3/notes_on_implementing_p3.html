@@ -27,7 +27,7 @@
 
     <ul>
       <li><a href="#data-preprocessing">Data Preprocessing</a></li>
-      <li><a href="#forward-pass">Forward Pass</tt></a></li>
+      <li><a href="#forward-pass">Forward Pass</a></li>
     </ul>
 
     This note presumes that the reader has finished reading the
@@ -73,7 +73,7 @@ graph.ndata["label"] = node_labels[:, 0]
       To modify DGL's classes to enable the switching between model parallelism
       and data parallelism, it is essential to identify the appropriate points
       for inserting scatter and gather operations. Within DGL, the forward pass
-      is accomplished by invoking the <tt>dgl.heterograph.DGLGraph.update_all</tt>
+      is accomplished by invoking the <code>dgl.heterograph.DGLGraph.update_all</code>
       function, which follows this call stack:
     </p>
 
@@ -90,11 +90,11 @@ dgl.heterograph.DGLGraph.update_all
     <p>
       Re-implementing DGL's built-in message and reduce functions is a
       straightforward process, enabling us to consistently carry out the
-      forward pass by invoking <tt>dgl.core.invoke_gsddmm</tt> and
-      <tt>dgl.core.invoke_gspmm</tt>. The critical point for inserting scatter
-      and gather functions lies between these two operations. This is where we
-      can customize the behavior to seamlessly switch between model parallelism
-      and data parallelism based on our requirements.
+      forward pass by invoking <code>dgl.core.invoke_gsddmm</code> and
+      <code>dgl.core.invoke_gspmm</code>. The critical point for inserting
+      scatter and gather functions lies between these two operations. This is
+      where we can customize the behavior to seamlessly switch between model
+      parallelism and data parallelism based on our requirements.
     </p>
 
     <h3>Implementing New Classes</h3>

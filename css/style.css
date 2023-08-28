@@ -15,17 +15,15 @@ body {
   color: var(--fg-color);
   font-family: "EBGaramond", sans-serif;
   max-width: 50%;
-  min-width: 60ch;
+  min-width: 50ch;
   margin: 0 auto;
   padding: 2em;
   word-wrap: break-word;
 }
 
-code, pre {
+code {
   color: var(--em-color);
-  display: flex;
   font-family: "VT323", monospace;
-  justify-content: center;
   word-wrap: break-word;
 }
 
@@ -40,10 +38,12 @@ p {
   text-align: justify;
 }
 
-tt {
+pre {
   color: var(--em-color);
+  display: flex;
   font-family: "VT323", monospace;
-  word-wrap: break-word;
+  justify-content: center;
+  overflow-x: auto;
 }
 
 .header {
