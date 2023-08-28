@@ -26,8 +26,8 @@
     </script>
 
     <ul>
-      <li><a href="#data-preprocessing">Data Preprocessing</a></li>
-      <li><a href="#forward-pass">Forward Pass</a></li>
+      <li><a href="#data-preprocessing">1 Data Preprocessing</a></li>
+      <li><a href="#forward-pass">2 Forward Pass</tt></a></li>
     </ul>
 
     This note presumes that the reader has finished reading the
@@ -35,7 +35,7 @@
     and the <a href="https://docs.dgl.ai/tutorials/dist/1_node_classification.html">Distributed Node Classification</a>
     documentations, and the contents are based on node classification only.
 
-    <h2 id="data-preprocessing">Data Preprocessing</h2>
+    <h2 id="data-preprocessing">1 Data Preprocessing</h2>
     <p>
       Before partitioning, it is crucial to ensure that the node labels in the
       DGL graph are stored for future usage:
@@ -62,18 +62,18 @@ graph.ndata["label"] = node_labels[:, 0]
       functionality.
     </p>
 
-    <h2 id="forward-pass">Forward Pass</h2>
+    <h2 id="forward-pass">2 Forward Pass</h2>
     <p>
       There are at least two ways to implement the forward pass as P<sup>3</sup>
       does, modifying DGL's built-in class or implement a new class from scratch.
     </p>
 
-    <h3>Modifying DGL</h3>
+    <h3>2.1 Modifying DGL</h3>
     <p>
       To modify DGL's classes to enable the switching between model parallelism
       and data parallelism, it is essential to identify the appropriate points
       for inserting scatter and gather operations. Within DGL, the forward pass
-      is accomplished by invoking the <code>dgl.heterograph.DGLGraph.update_all</code>
+      is accomplished by invoking the <tt>dgl.heterograph.DGLGraph.update_all</tt>
       function, which follows this call stack:
     </p>
 
@@ -90,14 +90,14 @@ dgl.heterograph.DGLGraph.update_all
     <p>
       Re-implementing DGL's built-in message and reduce functions is a
       straightforward process, enabling us to consistently carry out the
-      forward pass by invoking <code>dgl.core.invoke_gsddmm</code> and
-      <code>dgl.core.invoke_gspmm</code>. The critical point for inserting
-      scatter and gather functions lies between these two operations. This is
-      where we can customize the behavior to seamlessly switch between model
-      parallelism and data parallelism based on our requirements.
+      forward pass by invoking <tt>dgl.core.invoke_gsddmm</tt> and
+      <tt>dgl.core.invoke_gspmm</tt>. The critical point for inserting scatter
+      and gather functions lies between these two operations. This is where we
+      can customize the behavior to seamlessly switch between model parallelism
+      and data parallelism based on our requirements.
     </p>
 
-    <h3>Implementing New Classes</h3>
+    <h3>2.2 Implementing New Classes</h3>
     <p>
       Let us take a look at P<sup>3</sup>'s pipeline strategy (Figure 6 in paper).
     </p>
