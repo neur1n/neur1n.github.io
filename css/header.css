@@ -59,3 +59,18 @@ a:visited {
   margin-bottom: 0em;
   margin-top: 0em;
 }
+
+.header-row {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-sep {
+  padding-left: 1ch;
+  padding-right: 1ch;
+}
+
+.header-spc {
+  flex: 1;
+}
