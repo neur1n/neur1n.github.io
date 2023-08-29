@@ -28,6 +28,7 @@
     <ul>
       <li><a href="#data-preprocessing">1 Data Preprocessing</a></li>
       <li><a href="#forward-pass">2 Forward Pass</tt></a></li>
+      <li><a href="#problems">3 Problems</tt></a></li>
     </ul>
 
     This note presumes that the reader has finished reading the
@@ -167,6 +168,70 @@ class SAGEConv(object):
       for implementation details. However, it is important to note that the
       backward pass process might necessitate a customized approach which I
       have not done yet.
+    </p>
+
+    <h2 id="problems">3 Problems</h2>
+    <h3>3.1 Training on Multiple Machines</h3>
+    <p>
+      When initiating a distributed training across multiple machines, an error
+      consistently emerged, displaying the message "Cannot assign requested
+      address." After conducting some research, the problem might arise from
+      address unavailability due to
+    </p>
+
+    <ul>
+      <li>Port exhaustion.</li>
+      <li>Conflicting with processes occupying the desired addresses.</li>
+      <li>An excessive frequency of binding.</li>
+    </ul>
+
+    <p>
+      Regarding the port concern, the <code>ip_local_port_range</code> default
+      setting spans from 23768 to 60999. Despite attempting to expand this
+      range, the issue persisted unchanged. It's worth noting that a port
+      shortage nor address accessing conflict seemed improbable since a
+      thorough examination using <code>netstat -a</code>.
+    </p>
+
+    <p>
+      In terms of binding requests, the distributed training configuration
+      involved initiating 1 server and 1 client on each of the 2 machines,
+      resulting in a total of 2 instances. While the frequency of binding
+      requests was not inherently expected to be excessive, a definitive
+      assessment of their impact remained uncertain.
+    </p>
+
+    <p>
+     In pursuit of a solution, I also explored using LXC containers and virtual
+     machines on my Ubuntu 22.04 system to replicate a cluster-like
+     environment. Regrettably, despite these efforts to mitigate potential
+     hardware misconfigurations, the persistent error remains unchanged.
+    </p>
+
+    <h3>3.2 Training on Single Machine</h3>
+    <p>
+      According to this <a href="https://discuss.dgl.ai/t/partition-policy-nodeh-not-found-in-dist-graphsage-model/2023/4">comment</a>,
+      the original design of DGL did not account for distributed training
+      involving more than one graph partition on a single machine. A detailed
+      exploration of DGL's source code brought to light one, albeit potentially
+      not the exclusive, reason for this constraint is that DGL employs a
+      combination of the graph name and node/edge type for naming shared
+      memories. Consequently, a limitation arises wherein subsequent node
+      initiations can inadvertently overwrite shared memory containing data
+      from previously initiated nodes. This issue becomes particularly relevant
+      when multiple training nodes are launched on a single machine.
+    </p>
+
+    <p>
+      To address the shared memory conflict, I took the initiative to modify
+      DGL's naming methods and experimented with the execution of multiple
+      servers on a single machine. This modification successfully mitigated the
+      shared memory issue. However, a new challenge emerged when constructing
+      the <code>dgl.distributed.DistGraph</code>. In this scenario, a recurring
+      occurrence was the assignment of incorrect partition metadata (e.g.,
+      assigning client 0 with partition 1). This resulted in an inaccurate node
+      ID mapping and, inevitably, triggered out-of-bounds indexing of the
+      underlying data.
     </p>
   </div>
 </body>

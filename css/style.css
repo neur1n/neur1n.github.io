@@ -23,7 +23,7 @@ body {
 
 code {
   color: var(--em-color);
-  font-family: "VT323", monospace;
+  font-family: "ProggyCleanSZ", monospace;
   word-wrap: break-word;
 }
 
@@ -41,7 +41,7 @@ p {
 pre {
   color: var(--em-color);
   display: flex;
-  font-family: "VT323", monospace;
+  font-family: "ProggyCleanSZ", monospace;
   justify-content: center;
   overflow-x: auto;
 }

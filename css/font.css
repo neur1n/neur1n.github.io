@@ -13,8 +13,8 @@
 }
 
 @font-face {
-  font-family: "VT323";
-  src: url("/font/VT323-Regular.ttf") format("truetype");
+  font-family: "ProggyCleanSZ";
+  src: url("/font/ProggyCleanSZNerdFontMono-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
