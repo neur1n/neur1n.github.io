@@ -46,6 +46,10 @@ pre {
   overflow-x: auto;
 }
 
+.cn {
+  font-family: "LXGWWenKai", sans-serif;
+}
+
 .header {
   margin-bottom: 1em;
   width: 100%;

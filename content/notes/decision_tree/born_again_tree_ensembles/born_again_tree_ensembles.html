@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <title>Jihang Li - Born-Again Tree Ensembles</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="/js/mathjax/tex-chtml.js" async></script>
+  <script src="/js/theme.js"></script>
+
+  <script>
+    listenToggle();
+  </script>
+</head>
+
+<body>
+  <object type="text/html" data="/header.html" class="header"></object>
+
+  <div>
+    <h1>Born-Again Tree Ensembles</h1>
+
+    <script>
+      document.write(document.lastModified);
+    </script>
+
+    <ul>
+      <li><a href="#ten-questions">1 Ten Questions</a></li>
+    </ul>
+
+    <h2 id="ten-questions">1 Ten Questions</h2>
+    <h3>1.1 What is the problem addressed in the paper?</h3>
+    <p>
+      The concurrent use of multiple trees reduces the interpretability of the
+      ensemble. The paper studied born-again tree (BA tree) ensembles, i.e.,
+      the process of <b>constructing a single decision tree of minimum size
+      that reproduces the exact same behavior as a given tree ensemble
+      in its entire feature space</b>.
+    </p>
+
+    <h3>1.2 Is This a New Problem?</h3>
+    <p>
+      No, but the classifiers result from related works, all of which embed
+      heuristic construction techniques or an approximate objective, <b>do not
+      guarantee a behavior and prediction performance equal to the original
+      tree ensemble or neural network</b>.
+    </p>
+
+    <h3>1.3 What is the Scientific Hypothesis That the Paper is Trying to
+      Verify?</h3>
+    <p>
+      Hypothesis:
+      <ul>
+        <li>
+          Given a tree ensemble \(\mathcal{T}\), a single decision tree \(T\)
+          of minimal size can be found such that is faithful to \(\mathcal{T}\),
+          i.e., \(F_T(x) = F_{\mathcal{T}}(\mathbf{x}), \forall\mathbf{x} \in \mathbb{R}^p\).
+        </li>
+      </ul>
+
+      Definitions:
+      <ul>
+        <li>
+          \(\mathbf{x}_i \in \mathbb{R}^p\): \(p\)-dimension numerical feature
+          vector
+        </li>
+        <li>
+          \(\mathbf{y}_i \in \mathbb{N}\): \(\mathbf{x}_i\)'s associated class
+        </li>
+        <li>
+          \((\mathbf{X}, \mathbf{y}) = \{\mathbf{x}_i, y_i\}^n_{i = 1}\):
+          training set
+        </li>
+        <li>
+          \((\mathcal{X, Y})\): an unknown distribution where samples are drawn
+          from
+        </li>
+        <li>
+          \(\mathcal{T}\): a tree ensemble as a set of trees \(t \in \mathcal{T}\)
+          with weights \(w_t\)
+        </li>
+        <li>
+          \(F_{\mathcal{T}}: \mathcal{X} \to \mathcal{Y}\): a function learned
+          from \(\mathcal{T}\) that predicts \(y_i\) for each \(\mathbf{x}_i\)
+          drawn from \(\mathcal{X}\)
+        </li>
+        <li>
+          \(F_{\mathcal{T}}(\mathbf{x}) = \text{WEIGHTED-MAJORITY}\{(F_t(\mathbf{x}), w_t)\}_{t \in \mathcal{T}}\):
+          return of the tree ensemble for a sample \(\mathbf{x}\)
+          with weights \(w_t\)
+        </li>
+        <li>
+          \(H_j\): split hyperplanes extracted from the trees for each feature
+          \(j\) for \(j \in \{1, \dots, p\}\)
+        </li>
+        <li>
+          \(\mathcal{S}_{\text{ELEM}} = \{1, \dots, |H_1| + 1\} \times \cdots \times \{1, \dots, |H_p| + 1\}\):
+          cells result from partitioning the feature space \(\mathbb{R}^p\)
+        </li>
+        <li>
+          \(\mathbf{z} = (z_1, \dots, z_p) \in \mathcal{S}_{\text{ELEM}}\): a
+          cell representing a box contained between \(H_{z_j - 1}\) and
+          \(H_{z_j}\)
+          <ul>
+            <li>
+              Cells such that \(z_j = 1\) (or \(z_j = |H_j| + 1\)) extend from
+              \(-\infty\) (or to \(\infty\), respectively) along dimension \(j\)
+            </li>
+            <li>
+              \(F_{\mathcal{T}}(\mathbf{z})\) is constant in the interior of
+              each \(\mathbf{z}\)
+            </li>
+          </ul>
+        </li>
+        <li>
+          \((\mathbf{z}^\text{L}, \mathbf{z}^\text{R}) \in \mathcal{S}^2_{\text{ELEM}} \in \mathcal{S}_{\text{REGIONS}}\):
+          a region such that \(\mathbf{z}^\text{L} \le \mathbf{z} \le \mathbf{z}^\text{R}\)
+        </li>
+      </ul>
+    </p>
+
+    <h3>1.4 What are the key related works and who are the key people working
+      on this topic?</h3>
+    <p>
+    </p>
+
+    <h3>1.5 What is the Key of the Proposed Solution in the Paper?</h3>
+    <p>
+     The key is solving the BA tree ensembles construction problem:
+     <ul>
+       <li>
+         Developed a dynamic-programming based algorithm that solves the
+         problem efficiently.
+       </li>
+       <li>
+         Studied several pruning strategies.
+       </li>
+     </ul>
+    </p>
+
+    <h3>1.6 How are the Experiments Designed?</h3>
+    <p>
+    </p>
+
+    <h3>1.7 What Datasets are Built/Used for the Quantitative Evaluation? Is
+      the Code Open Sourced?</h3>
+    <p>
+    </p>
+
+    <h3>1.8 Is the Scientific Hypothesis Well Supported by Evidence in the
+      Experiments?</h3>
+    <p>
+    </p>
+
+    <h3>1.9 What are the Contributions of the Paper?</h3>
+    <p>
+    </p>
+
+    <h3>1.10 What Should/Could be Done Next?</h3>
+    <p>
+    </p>
+  </div>
+</body>
