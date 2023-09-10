@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <title>Jihang Li - Compiling Generalized Histograms for GPU</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="/js/mathjax/tex-chtml.js" async></script>
+  <script src="/js/theme.js"></script>
+  <script>
+    listenToggle();
+  </script>
+</head>
+
+<body>
+  <object type="text/html" data="/header.html" class="header"></object>
+
+  <div>
+    <h1>Compiling Generalized Histograms for GPU</h1>
+
+    <script>
+      document.write(document.lastModified);
+    </script>
+
+    <ul>
+      <li><a href="#notations">1 Notations</a></li>
+      <li><a href="#type-driven">2 Type-Driven Selection of the Atomic Primitive</a></li>
+      <li><a href="#shared-memory">3 Computing Histograms in Shared Memory</a></li>
+      <li><a href="#global-memory">4 Computing Histograms in Global Memory</a></li>
+    </ul>
+
+    <h2 id="notations">1 Notations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">\(\alpha\)</td>
+          <td>Input array element type.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(\beta\)</td>
+          <td>Value type of the generalized histogram.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(el_{size}\)</td>
+          <td>\(\text{sizeof}(\beta)\)</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(\oplus\)</td>
+          <td>
+            \(\oplus: \beta \to \beta \to \beta\), an associative and
+            commutative operator.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">\(0_{\oplus}\)</td>
+          <td>The neutral element of \(\oplus\).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(f\)</td>
+          <td>
+            \(f: \alpha \to (\text{int}, \beta)\), a function producing an
+            index/value pair for updating the histogram.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">\(N\)</td>
+          <td>Length of the input array.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(H\)</td>
+          <td>Number of histogram bins (typically \(H \le N\)).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(S\)</td>
+          <td>Count of the sequential multi-pass loop.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(H_{chk}\)</td>
+          <td>
+            \(\lceil \frac{H}{S} \rceil\), number of bins processed in a single
+            pass.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">\(L\)</td>
+          <td>Shared memory size (bytes).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(L2\)</td>
+          <td>L2 cache size (bytes).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(L2^{ln}_{sz}\)</td>
+          <td>L2 cache line size (bytes).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(T_{hw}\)</td>
+          <td>The maximal number of concurrent hardware threads.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(T\)</td>
+          <td>\(min(T_{hw}, N)\), concurrent threads utilized.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(B\)</td>
+          <td>Maximal CUDA block size.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(C\)</td>
+          <td>
+            Number of threads cooperatively working on the same subhistogram.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">\(M\)</td>
+          <td>Histogram's multiplication degree.</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(RF\)</td>
+          <td>
+            The average fraction of distinct bins that are accessed by groups
+            of \(H\) consecutive elements.
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">\(K\)</td>
+          <td>Thread blocks per histogram (in batched case).</td>
+        </tr>
+        <tr>
+          <td class="text-center">\(N_{out}\)</td>
+          <td>Number of batched histograms we are computing.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="type-driven">2 Type-Driven Selection of the Atomic Primitive</h2>
+    <h3>2.1 HDW</h3>
+    <p>
+      This class of operators correspond to those directly supported by the
+      hardware. For example, integer addition (<code>atomicAdd</code>),
+      min/max, and bitwise and/or operations are typically supported, and CUDA
+      also supports float addition.
+    </p>
+
+    <h3>2.2 CAS</h3>
+    <p>
+      If \(\beta\) is some 32 or 64-bit type, then we use the compare and
+      exchange primitive (<code>atomicCAS</code>), where \((j, v)\) denotes the
+      index-value pair to be updated:
+    </p>
+
+    <div class="code-block"><!--
+-->\(\beta\) assumed, old = histo[j];
+do {\(\beta\) new = old \(\oplus\) v;
+  assumed = old;
+  old = atomicCAS(&histo[j], old, new);
+} while (assumed != old);<!--
+ --></div>
+
+    <h3>2.3 XCG</h3>
+    <p>
+      Any other type \(\beta\) and operator \(\oplus\) will use a busy-waiting
+      strategy implemented by means of the <code>atomicExch</code> primitive
+      and an array of locks.
+    </p>
+
+    <div class="code-block"><!--
+-->while (!done) {
+  int done = 0;
+  if(atomicExch(&locks[j], 1) == 0) {
+    histo[j] = histo[j] \(\oplus\) v;
+    mem_fence();
+    locks[j] = 0;
+    done = 1;
+  }
+}<!--
+ --></div>
+
+    <h2 id="shared-memory">3 Computing Histograms in Shared Memory</h2>
+    \[
+    \begin{align}
+    \tag{1}
+      blocks &= \lceil T / B \rceil
+      \\
+      m' &= min(\frac{L}{el_{size}}, \lceil \frac{N}{block} \rceil) / H
+    \end{align}
+    \]
+
+    \[
+    \begin{align}
+    \tag{2}
+      M &= max(1, min(\lfloor m' \rfloor, B))
+      \\
+      C &= \lceil \frac{B}{M} \rceil
+    \end{align}
+    \]
+
+    \[
+    \begin{align}
+    \tag{3}
+      len &= \frac{L}{el_{size} \cdot H}
+      \\
+      S &= \lceil \frac{H}{len} \rceil
+      \\
+      H_{chk} &= \lceil \frac{H}{S} \rceil
+    \end{align}
+    \]
+
+    <h2 id="global-memory">4 Computing Histograms in Global Memory</h2>
+  </div>
+</body>
+</html>

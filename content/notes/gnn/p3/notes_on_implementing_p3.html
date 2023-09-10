@@ -44,8 +44,8 @@
       DGL graph are stored for future usage:
     </p>
 
-    <pre>
-from dgl.distributed import partition_graph
+    <div class="code-block"><!--
+-->from dgl.distributed import partition_graph
 from ogb.nodeproppred import DglNodePropPredDataset
 import dgl
 
@@ -54,8 +54,8 @@ dataset = DglNodePropPredDataset("ogbn-arxiv")
 graph, node_labels = dataset[0]
 graph = dgl.add_reverse_edges(graph)
 
-graph.ndata["label"] = node_labels[:, 0]
-    </pre>
+graph.ndata["label"] = node_labels[:, 0]<!--
+ --></div>
 
     <p>
       It is worth noting that the current documentation does not explicitly
@@ -80,15 +80,15 @@ graph.ndata["label"] = node_labels[:, 0]
       function, which follows this call stack:
     </p>
 
-    <pre>
-dgl.heterograph.DGLGraph.update_all
+    <div class="code-block"><!--
+-->dgl.heterograph.DGLGraph.update_all
 |- dgl.core.message_passing
    |  |- dgl.core.invoke_gspmm:  if message and reduce are built-in
    |
    |                             else
    |---- dgl.core.invoke_gsddmm: message
-         dgl.core.invoke_gspmm:  reduce
-    </pre>
+         dgl.core.invoke_gspmm:  reduce<!--
+ --></div>
 
     <p>
       Re-implementing DGL's built-in message and reduce functions is a
@@ -123,8 +123,8 @@ dgl.heterograph.DGLGraph.update_all
       Adhering to this distinct pattern, my current design takes shape:
     </p>
 
-    <pre>
-class SAGEConv(object):
+    <div class="code-block"><!--
+-->class SAGEConv(object):
     def __init__(self):
         self._job_thd = threading.Thread(target=self._handle_job)
         self._scatter_thd = threading.Thread(target=self._handle_scatter)
@@ -162,8 +162,8 @@ class SAGEConv(object):
 
   def _handle_apply(self):
       # Get data from self._apply_que and perform apply.
-      # Then push the result to self._output_que.
-    </pre>
+      # Then push the result to self._output_que.<!--
+ --></div>
 
     <p>
       Please visit the <a href="https://github.com/neur1n/p3" target="_blank">code</a>

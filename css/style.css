@@ -46,11 +46,35 @@ pre {
   overflow-x: auto;
 }
 
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table, td, th {
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
 .cn {
   font-family: "LXGWWenKai", sans-serif;
+}
+
+.code-block {
+  border: 1px solid;
+  color: var(--em-color);
+  font-family: "ProggyCleanSZ", monospace;
+  line-height: 1.5em;
+  overflow-x: auto;
+  padding: 10px;
+  white-space: pre;
 }
 
 .header {
   margin-bottom: 1em;
   width: 100%;
+}
+
+.text-center {
+  text-align: center;
 }
