@@ -161,7 +161,8 @@
 
     <div class="code-block"><!--
 -->\(\beta\) assumed, old = histo[j];
-do {\(\beta\) new = old \(\oplus\) v;
+do {
+  \(\beta\) new = old \(\oplus\) v;
   assumed = old;
   old = atomicCAS(&histo[j], old, new);
 } while (assumed != old);<!--
@@ -217,6 +218,73 @@ do {\(\beta\) new = old \(\oplus\) v;
     \]
 
     <h2 id="global-memory">4 Computing Histograms in Global Memory</h2>
+    \[
+    \begin{align}
+    \tag{4}
+      RACE^{exp} = max\left(1.0, \frac{k_{RF} \cdot RF}{min(1.0, L2^{ln}_{sz} \div el^{avg}_{size})}\right)
+    \end{align}
+    \]
+
+    <p>
+      where \(k_{RF} = 0.75\) was chosen experimentally, and \(el^{avg}_{size}\)
+      is the average size of the histogram element.
+    </p>
+
+    <p>
+      For the HDW and CAS cases, \(el^{avg}_{size}\) is the size of \(\beta\).
+      For the XCG case, it depends on the memory layout:
+
+      <ol>
+        <li>
+          If the histogram element and the lock are contiguously laid out in
+          memory, then \(el^{avg}_{size} = \text{sizeof}(\beta) + 4\).
+        </li>
+        <li>
+          If the histogram element has contiguous memory layout - i.e., array
+          of tuples layout - but the locks are stored in a separate array then
+          \(el^{avg}_{size} = (\text{sizeof}(\beta) + 4) / 2\).
+        </li>
+        <li>
+          If \(\beta = (\alpha_1, \dots, \alpha_u)\) such that each
+          \(\alpha_i \in \{1, \dots, q\}\) has contiguous layout, but each of
+          them and the locks are stored in different arrays - i.e., tuple of
+          arrays layout - then
+          \(el^{avg}_{size} = (\text{sizeof}(\alpha_1) + \dots + \text{sizeof}(\alpha_q) + 4) / (q + 1)\).
+        </li>
+      </ol>
+    </p>
+
+    \[
+    \begin{align}
+    \tag{5}
+      C_{max} &= min\left(T, \frac{H}{k^{ct}_{min}}\right)
+      \\
+      M_{min} &= max\left(1, \lfloor \frac{T}{C_{max}} \rfloor\right)
+      \\
+      S &= \lceil \frac{M_{min} \cdot H \cdot el^{avg}_{size}}{f_{L2} \cdot L2 \cdot RACE^{exp}} \rceil
+      \\
+      H_{chk} &= \lceil \frac{H}{S} \rceil
+    \end{align}
+    \]
+
+    <p>
+      where \(k^{ct}_{min}\) was chosen as 2.
+    </p>
+
+    \[
+    \begin{align}
+    \tag{6}
+      C &= min\left(T, \frac{u \cdot H_{chk}}{k_{max}}\right)
+      \\
+      M &= max\left(1, \lfloor \frac{T}{C} \rfloor\right)
+      \\
+      K_{max} &= \frac{min\left(\frac{F_{L2} \cdot L2 \cdot RACE^{exp}}{el_{size}}, N\right)}{T}
+    \end{align}
+    \]
+
+    <p>
+      where \(u = 2.0\) for HDW, \(u = 1.0\) for CAS and XCG.
+    </p>
   </div>
 </body>
 </html>
