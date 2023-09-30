@@ -34,7 +34,7 @@ img {
   width: 85%;
 }
 
-p {
+p, ol, ul {
   text-align: justify;
 }
 
