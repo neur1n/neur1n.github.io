@@ -1,0 +1,542 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <title>Jihang Li - Basics of GNN</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="/js/mathjax/tex-chtml.js" async></script>
+  <script src="/js/theme.js"></script>
+
+  <script>
+    listenToggle();
+  </script>
+</head>
+
+<body>
+  <object type="text/html" data="/header.html" class="header"></object>
+
+  <div>
+    <h1>Basics of GNN</h1>
+
+    <p><em>2023-10-03 14:52</em></p>
+
+    <ul>
+      <li>
+        <a href"=#structure-repr">1 Structure Representation</a>
+        <ul>
+            <a href"=#dense-repr-1">1.1 Dense Representation</a>
+        </ul>
+        <ul>
+            <a href"=#sparse-repr">1.2 Sparse Representation</a>
+        </ul>
+      </li>
+      <li>
+        <a href"=#embedding-repr">2 Embedding Representation</a>
+        <ul>
+          <li>
+            <a href"=#dense-repr-2">2.1 Dense Representation</a>
+          </li>
+          <li>
+            <a href"=#coo-repr">2.2 Coordinate (COO) Representation</a>
+          </li>
+          <li>
+            <a href"=#csr-repr">2.3 Compressed Sparse Row (CSR) Representation</a>
+          </li>
+          <li>
+            <a href"=#csc-repr">2.4 Compressed Sparse Column (CSC) Representation</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2 id="structure-repr">1 Structure Representation</h2>
+    <img src="/content/notes/gnn/basics/image/example_graph.png" alt="example graph" style="width:80%">
+
+    <h3 id="dense-repr-1">1.1 Dense Representation</h3>
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="sparse-repr">1.2 Sparse Representation</h3>
+    <h4>1.2.1 DGL</h4>
+    <p>
+      Deep Graph Library (DGL) uses two arrays to represent the structure of a
+      graph:
+    </p>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;u&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td>e</td>
+          <td>0</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>&nbsp;v&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="embedding-repr">2 Embedding Representation</h2>
+    <h3 id="dense-repr-2">2.1 Dense Representation</h3>
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;4&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;6&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;8&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;5&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="coo-repr">2.2 Coordinate (COO) Representation</h3>
+    <p>
+      This method uses three arrays to represent a sparse matrix:
+    </p>
+
+    <ol>
+      <li>
+        Values: Storing the value of each non-zero element.
+      </li>
+      <li>
+        Row indices: Storing the row index of each non-zero element.
+      </li>
+      <li>
+        Column indices: Storing the column index of each non-zero element.
+      </li>
+    </ol>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;r&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;c&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;v&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;4&nbsp;</td>
+          <td>&nbsp;6&nbsp;</td>
+          <td>&nbsp;8&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;5&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;4&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;6&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;8&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;5&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="csr-repr">2.3 Compressed Sparse Row (CSR) Representation</h3>
+    <p>
+      This method uses three arrays to represent a sparse matrix:
+    </p>
+
+    <ol>
+      <li>
+        Values: Storing the value of each non-zero element.
+      </li>
+      <li>
+        Column indices: Storing the column index of each non-zero element.
+      </li>
+      <li>
+        <b>Row pointers</b>: Storing the index of the first non-zero element of
+        each row in the first two arrays.
+      </li>
+    </ol>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+        </tr>
+        <tr>
+          <td>&nbsp;r&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;4&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td style="color:orange;">0</td>
+          <td></td>
+          <td style="color:green;">2</td>
+          <td></td>
+          <td>4</td>
+          <td></td>
+          <td></td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>&nbsp;c&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;1&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;v&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;4&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;6&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;8&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;5&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;4&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;6&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;8&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;5&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="csc-repr">1.4 Compressed Sparse Column (CSC) Representation</h3>
+    <p>
+      This repr uses three arrays to represent a sparse matrix:
+    </p>
+
+    <ol>
+      <li>
+        Values: Storing the value of each non-zero element.
+      </li>
+      <li>
+        Row indices: Storing the row index of each non-zero element.
+      </li>
+      <li>
+        <b>Column pointers</b>: Storing the index of the first non-zero element
+        of each column in the first two arrays.
+      </li>
+    </ol>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+        </tr>
+        <tr>
+          <td>&nbsp;c&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;4&nbsp;</td>
+          <td>&nbsp;6&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+          <td>&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td style="color:orange;">0</td>
+          <td></td>
+          <td style="color:green;">2</td>
+          <td></td>
+          <td>4</td>
+          <td></td>
+          <td>6</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;r&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;1&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;v&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;1&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;6&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;5&nbsp;</td>
+          <td>&nbsp;4&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;8&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="matrix-indexed">
+      <tbody>
+        <tr>
+          <td></td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;2&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;2&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;4&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;1&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;6&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;8&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;2&nbsp;</td>
+          <td style="background-color:orange; color:black;">&nbsp;1&nbsp;</td>
+          <td style="background-color:green; color:black;">&nbsp;5&nbsp;</td>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;3&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;0&nbsp;</td>
+          <td>&nbsp;7&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>

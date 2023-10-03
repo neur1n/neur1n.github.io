@@ -47,13 +47,13 @@ pre {
 }
 
 table {
+  border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
 }
 
-table, td, th {
+table td, th {
   border: 1px solid;
-  border-collapse: collapse;
 }
 
 .cn {
@@ -74,6 +74,22 @@ table, td, th {
   margin-bottom: 1em;
   width: 100%;
 }
+
+.matrix, .matrix-indexed {
+  font-family: "ProggyCleanSZ", monospace;
+  line-height: 3ch;
+  text-align: center;
+}
+
+.matrix-indexed tr:first-child td,
+.matrix-indexed td:first-child {
+  border: none;
+}
+
+/* .matrix tr:first-child td, */
+/* .matrix td:first-child { */
+/*   border: none; */
+/* } */
 
 .text-center {
   text-align: center;
