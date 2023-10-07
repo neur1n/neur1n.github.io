@@ -94,20 +94,76 @@
     <h3 id="q-1-3">1.3 What is the Scientific Hypothesis That the Paper is
       Trying to Verify?</h3>
     <p>
-      The work focuses on exploring the potential of TCUs for accelerating
-      GNN-based graph learning and suggests that the design and optimization
-      principles may have broader applicability to other similar AI hardware
-      (e.g., Google TPU and AMD Matrix Core) for sparse deep-learning workloads.
+      The pattern of the graph sparsity can be well-tuned for TCU computation
+      through effective graph structural manipulation meanwhile guaranteeing
+      output correctness.
     </p>
 
     <h3 id="q-1-4">1.4 What are the key related works and who are the key
       people working on this topic?</h3>
-    <p>
-    </p>
+    <ul>
+      <li>
+        CUDA: Scalar computation.
+      </li>
+      <li>
+        TCU: Tile-based matrix-matrix computation, which can deliver more than
+        10× throughput improvement.
+      </li>
+      <li>
+        Problem of working with sparse matrices:
+      </li>
+    </ul>
 
     <h3 id="q-1-5">1.5 What is the Key of the Proposed Solution in the Paper?</h3>
     <p>
+      Prior efforts use TCUs in the <b>dense deep learning applications</b>
+      that TCU is initially designed for, while TC-GNN jumps out of the scope
+      defined by TCU designers and accelerates the <b>sparse full-graph GNNs</b>
+      using TCUs.
     </p>
+
+    <ol>
+      <li>
+        <b>TCU-aware Sparse Graph Translation (SGT)</b>: Condensing/remapping
+        the neighbor indices into new neighbor indices that can facilitate the
+        dense TCU computation paradigm. This fits the non-zero elements into
+        fewer TCU blocks, thus reduces the unnecessary computation and memory
+        overhead.
+
+        <img src="/content/notes/gnn/tc_gnn/image/figure_4.png" alt="figure 4" style="width:80%">
+
+        <img src="/content/notes/gnn/tc_gnn/image/algo_1.png" alt="algo 1" style="width:40%">
+      </li>
+      <li>
+        <b>TCU-tailored GNN Computation</b>: Initiating tiles for TCU.
+        <ul>
+          <li>
+            Neighbor Aggregation (for nodes): Focusing on maximizing the <b>net
+            performance gains</b> by batching the originally highly irregular
+            SpMM as dense GEMM computation and solving it on TCU.
+
+            <img src="/content/notes/gnn/tc_gnn/image/algo_2.png" alt="algo 2" style="width:40%">
+          </li>
+          <li>
+            Edge Feature Computing (for edges): Similar to neighbor aggregation,
+            but with different outputs.
+
+            <img src="/content/notes/gnn/tc_gnn/image/algo_3.png" alt="algo 3" style="width:40%">
+          </li>
+        </ul>
+      </li>
+      <li>
+        <b>TCU-centric Workload Mapping</b>
+        <ul>
+          <li>
+            GPU-aware Workload Decomposition
+          </li>
+          <li>
+            TCU-optimized dataflow design
+          </li>
+        </ul>
+      </li>
+    </ol>
 
     <h3 id="q-1-6">1.6 How are the Experiments Designed?</h3>
     <ol>
