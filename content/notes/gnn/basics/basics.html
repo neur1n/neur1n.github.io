@@ -27,30 +27,33 @@
 
     <ul>
       <li>
-        <a href"=#structure-repr">1 Structure Representation</a>
+        <a href="#structure-repr">1 Structure Representation</a>
         <ul>
-            <a href"=#dense-repr-1">1.1 Dense Representation</a>
+            <a href="#dense-repr-1">1.1 Dense Representation</a>
         </ul>
         <ul>
-            <a href"=#sparse-repr">1.2 Sparse Representation</a>
+            <a href="#sparse-repr">1.2 Sparse Representation</a>
         </ul>
       </li>
       <li>
-        <a href"=#embedding-repr">2 Embedding Representation</a>
+        <a href="#embedding-repr">2 Embedding Representation</a>
         <ul>
           <li>
-            <a href"=#dense-repr-2">2.1 Dense Representation</a>
+            <a href="#dense-repr-2">2.1 Dense Representation</a>
           </li>
           <li>
-            <a href"=#coo-repr">2.2 Coordinate (COO) Representation</a>
+            <a href="#coo-repr">2.2 Coordinate (COO) Representation</a>
           </li>
           <li>
-            <a href"=#csr-repr">2.3 Compressed Sparse Row (CSR) Representation</a>
+            <a href="#csr-repr">2.3 Compressed Sparse Row (CSR) Representation</a>
           </li>
           <li>
-            <a href"=#csc-repr">2.4 Compressed Sparse Column (CSC) Representation</a>
+            <a href="#csc-repr">2.4 Compressed Sparse Column (CSC) Representation</a>
           </li>
         </ul>
+      </li>
+      <li>
+        <a href="#computing-flow">3 Computing Flow</a>
       </li>
     </ul>
 
@@ -58,6 +61,10 @@
     <img src="/content/notes/gnn/basics/image/example_graph.png" alt="example graph" style="width:80%">
 
     <h3 id="dense-repr-1">1.1 Dense Representation</h3>
+    <p>
+      The adjacent matrix:
+    </p>
+
     <table class="matrix-indexed">
       <tbody>
         <tr>
@@ -417,7 +424,7 @@
       </tbody>
     </table>
 
-    <h3 id="csc-repr">1.4 Compressed Sparse Column (CSC) Representation</h3>
+    <h3 id="csc-repr">2.4 Compressed Sparse Column (CSC) Representation</h3>
     <p>
       This repr uses three arrays to represent a sparse matrix:
     </p>
@@ -538,5 +545,36 @@
         </tr>
       </tbody>
     </table>
+
+    <h3 id="computing-flow">3 Computing Flow</h3>
+    \[
+    \begin{align*}
+      a^{(k + 1)}_v &= Aggregate^{(k + 1)} (h^{(k)}_u \vert u \in \textbf{N}(v) \cup h^{(k)}_v)
+      \\
+      h^{(k + 1)}_v &= Update^{(k+1)} (a^{(k + 1)}_v)
+    \end{align*}
+    \]
+
+    <p>
+      where
+    </p>
+
+    <ul>
+      <li>
+        \(a^{(k + 1)}_v\): The aggregation results through collecting neighbors’
+        information (e.g., node embeddings).
+      </li>
+      <li>
+        \(h^{(k)}_v\): The embedding vector for node \(v\) at layer \(k\).
+      </li>
+      <li>
+        \(\textbf{N}(v)\): The neighbor set of node \(v\).
+      </li>
+    </ul>
+
+    <p>
+      The aggregation method and the order of aggregation and update could vary
+      across different GNNs.
+    </p>
   </div>
 </body>
