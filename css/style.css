@@ -14,6 +14,7 @@ body {
   background-color: var(--bg-color);
   color: var(--fg-color);
   font-family: "EBGaramond", sans-serif;
+  font-size: var(--font-size);
   max-width: 50%;
   min-width: 50ch;
   margin: 0 auto;
@@ -24,6 +25,7 @@ body {
 code {
   color: var(--em-color);
   font-family: "ProggyCleanSZ", monospace;
+  font-size: var(--font-size);
   word-wrap: break-word;
 }
 
@@ -42,6 +44,7 @@ pre {
   color: var(--em-color);
   display: flex;
   font-family: "ProggyCleanSZ", monospace;
+  font-size: var(--font-size);
   justify-content: center;
   overflow-x: auto;
 }
@@ -58,12 +61,14 @@ table td, th {
 
 .cn {
   font-family: "LXGWWenKai", sans-serif;
+  font-size: var(--font-size);
 }
 
 .code-block {
   border: 1px solid;
   color: var(--em-color);
   font-family: "ProggyCleanSZ", monospace;
+  font-size: var(--font-size);
   line-height: 1.5em;
   overflow-x: auto;
   padding: 10px;
@@ -77,6 +82,7 @@ table td, th {
 
 .matrix, .matrix-indexed {
   font-family: "ProggyCleanSZ", monospace;
+  font-size: var(--font-size);
   line-height: 3ch;
   text-align: center;
 }

@@ -14,6 +14,15 @@ a:visited {
   color: #5f87ff;
 }
 
+.header-body {
+  color: var(--em-color);
+  font-family: "EBGaramond", sans-serif;
+  font-size: 16px;
+  font-variant: small-caps;
+  margin: 0 auto;
+  padding: 0;
+}
+
 .header-button {
   background-color: var(--em-color);
   border: none;
@@ -23,24 +32,6 @@ a:visited {
   position: absolute;
   right: 0;
   top: 0;
-}
-
-.header-name {
-  color: var(--em-color);
-  margin: 0;
-  padding: 0;
-}
-
-.header-occupation {
-  color: var(--em-color);
-}
-
-.header-body {
-  color: var(--em-color);
-  font-family: "EBGaramond", sans-serif;
-  font-variant: small-caps;
-  margin: 0 auto;
-  padding: 0;
 }
 
 .header-image {
@@ -55,9 +46,19 @@ a:visited {
   text-align: left;
 }
 
+.header-name {
+  color: var(--em-color);
+  margin: 0;
+  padding: 0;
+}
+
 .header-nav {
   margin-bottom: 0em;
   margin-top: 0em;
+}
+
+.header-occupation {
+  color: var(--em-color);
 }
 
 .header-row {
